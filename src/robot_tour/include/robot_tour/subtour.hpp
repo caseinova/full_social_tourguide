@@ -13,6 +13,7 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "social_robot_interfaces/msg/tsp_command.hpp"
 #include "social_robot_interfaces/srv/tours.hpp"
+#include "std_msgs/msg/string.hpp"
 
 namespace robot_tour
 {
@@ -51,12 +52,15 @@ namespace robot_tour
             GoalHandleWaypoints::SharedPtr,
             const std::shared_ptr<const Waypoints::Feedback> feedback);
         void resultCallback(const GoalHandleWaypoints::WrappedResult & result);
+        void publishDockCommand();
 
         rclcpp::Subscription<social_robot_interfaces::msg::TspCommand>::SharedPtr tsp_subscription_;
         rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr current_pose_subscription_;
+        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr dock_command_publisher_;
         rclcpp_action::Client<Waypoints>::SharedPtr waypoint_client_;
         rclcpp::Client<social_robot_interfaces::srv::Tours>::SharedPtr tour_service_client_;
         int max_2opt_iterations_ = 1000;
+        bool dock_after_tour_ = false;
         bool has_current_pose_ = false;
         geometry_msgs::msg::PoseStamped current_pose_;
 

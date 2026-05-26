@@ -30,6 +30,7 @@ def generate_launch_description():
             package='robot_tour',
             namespace='',
             executable='tour_guide_start',
+            name='tour_guide',
             parameters=[params_file],
         ),
         Node(

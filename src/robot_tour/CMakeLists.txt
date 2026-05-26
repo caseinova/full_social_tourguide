@@ -23,13 +23,13 @@ find_package(pluginlib REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 add_library(tour_guide SHARED src/tour_guide.cpp)
-ament_target_dependencies(tour_guide rclcpp rclcpp_action rclcpp_components nav2_msgs geometry_msgs social_robot_interfaces)
+ament_target_dependencies(tour_guide rclcpp rclcpp_action rclcpp_components nav2_msgs geometry_msgs social_robot_interfaces std_msgs)
 rclcpp_components_register_node(tour_guide PLUGIN "robot_tour::WaypointFollowerClient" EXECUTABLE tour_guide_start)
 add_library(subtour SHARED src/subtour.cpp)
 target_include_directories(subtour PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(subtour rclcpp rclcpp_action rclcpp_components nav2_msgs geometry_msgs social_robot_interfaces)
+ament_target_dependencies(subtour rclcpp rclcpp_action rclcpp_components nav2_msgs geometry_msgs social_robot_interfaces std_msgs)
 rclcpp_components_register_node(subtour PLUGIN "robot_tour::SubtourNode" EXECUTABLE subtour_start)
 install(TARGETS
   tour_guide

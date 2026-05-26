@@ -19,10 +19,13 @@ SubtourNode::SubtourNode(const rclcpp::NodeOptions & options)
   const auto command_topic = this->declare_parameter<std::string>("command_topic", "/tsp_command");
   const auto action_name = this->declare_parameter<std::string>("action_name", "/follow_waypoints");
   const auto current_pose_topic = this->declare_parameter<std::string>("current_pose_topic", "/amcl_pose");
+  const auto dock_command_topic = this->declare_parameter<std::string>("dock_command_topic", "/dock_command");
+  dock_after_tour_ = this->declare_parameter<bool>("dock_after_tour", false);
   max_2opt_iterations_ = this->declare_parameter<int>("max_2opt_iterations", 1000);
 
   waypoint_client_ = rclcpp_action::create_client<Waypoints>(this, action_name);
   tour_service_client_ = this->create_client<social_robot_interfaces::srv::Tours>("tour_retrieve");
+  dock_command_publisher_ = this->create_publisher<std_msgs::msg::String>(dock_command_topic, 10);
   current_pose_subscription_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
     current_pose_topic,
     rclcpp::SystemDefaultsQoS(),
@@ -34,9 +37,11 @@ SubtourNode::SubtourNode(const rclcpp::NodeOptions & options)
 
   RCLCPP_INFO(
     this->get_logger(),
-    "Listening for TSP waypoint lists on '%s' and sending tours to '%s'",
+    "Listening for TSP waypoint lists on '%s' and sending tours to '%s'; dock_after_tour=%s, dock_command_topic='%s'",
     command_topic.c_str(),
-    action_name.c_str());
+    action_name.c_str(),
+    dock_after_tour_ ? "true" : "false",
+    dock_command_topic.c_str());
 }
 
 float SubtourNode::computeCost(
@@ -324,6 +329,7 @@ void SubtourNode::resultCallback(const GoalHandleWaypoints::WrappedResult & resu
         this->get_logger(),
         "Waypoint tour completed with %zu missed waypoints",
         result.result->missed_waypoints.size());
+      publishDockCommand();
       break;
     case rclcpp_action::ResultCode::ABORTED:
       RCLCPP_ERROR(this->get_logger(), "Waypoint tour was aborted");
@@ -335,6 +341,20 @@ void SubtourNode::resultCallback(const GoalHandleWaypoints::WrappedResult & resu
       RCLCPP_ERROR(this->get_logger(), "Waypoint tour returned an unknown result code");
       break;
   }
+}
+
+void SubtourNode::publishDockCommand()
+{
+  this->get_parameter("dock_after_tour", dock_after_tour_);
+  if (!dock_after_tour_) {
+    RCLCPP_INFO(this->get_logger(), "dock_after_tour is false; not publishing dock command");
+    return;
+  }
+
+  auto msg = std_msgs::msg::String();
+  msg.data = "dock";
+  dock_command_publisher_->publish(msg);
+  RCLCPP_INFO(this->get_logger(), "Published dock command after tour completion");
 }
 
 }  // namespace robot_tour

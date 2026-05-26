@@ -23,13 +23,23 @@ public:
   explicit WaypointFollowerClient(const rclcpp::NodeOptions & options)
   : Node("waypoint_action_client", options)
   {
+    dock_after_tour_ = this->declare_parameter<bool>("dock_after_tour", false);
+    const auto dock_command_topic = this->declare_parameter<std::string>(
+      "dock_command_topic", "/dock_command");
+
     sub_node_tour = rclcpp::Node::make_shared("subservient_tour_node");
     this->client_ptr_ = rclcpp_action::create_client<Waypoints>(
       this,
       "/follow_waypoints");
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "tour_command", 10, std::bind(&WaypointFollowerClient::topic_callback, this, std::placeholders::_1));
+    dock_command_publisher_ = this->create_publisher<std_msgs::msg::String>(dock_command_topic, 10);
     this->tour_service_client_ = sub_node_tour->create_client<social_robot_interfaces::srv::Tours>("tour_retrieve");
+    RCLCPP_INFO(
+      this->get_logger(),
+      "Tour guide dock_after_tour=%s, dock_command_topic='%s'",
+      dock_after_tour_ ? "true" : "false",
+      dock_command_topic.c_str());
     
   
   }
@@ -65,6 +75,8 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
   std::shared_ptr<rclcpp::Node> sub_node_tour;
   rclcpp::Client<social_robot_interfaces::srv::Tours>::SharedPtr tour_service_client_;
+  rclcpp::Publisher<std_msgs::msg::String>::SharedPtr dock_command_publisher_;
+  bool dock_after_tour_ = false;
 
   void goal_response_callback(std::shared_ptr<GoalHandleWaypoints> future)
   {
@@ -104,8 +116,24 @@ private:
     {
     RCLCPP_INFO(this->get_logger(), "Missed %u \n", result.result->missed_waypoints[i]);
     }
+    publish_dock_command();
     // rclcpp::shutdown();
   }
+
+  void publish_dock_command()
+  {
+    this->get_parameter("dock_after_tour", dock_after_tour_);
+    if (!dock_after_tour_) {
+      RCLCPP_INFO(this->get_logger(), "dock_after_tour is false; not publishing dock command");
+      return;
+    }
+
+    auto msg = std_msgs::msg::String();
+    msg.data = "dock";
+    dock_command_publisher_->publish(msg);
+    RCLCPP_INFO(this->get_logger(), "Published dock command after tour completion");
+  }
+
   void topic_callback(const std_msgs::msg::String::SharedPtr msg)
   {
     RCLCPP_INFO(this->get_logger(), "received %s", msg->data.c_str());

@@ -5,13 +5,17 @@ tour_saver:
   ros__parameters: {}
 
 tour_guide:
-  ros__parameters: {}
+  ros__parameters:
+    dock_after_tour: true
+    dock_command_topic: /dock_command
 
 subtour:
   ros__parameters:
     command_topic: /tsp_command
     action_name: /follow_waypoints
     current_pose_topic: /amcl_pose
+    dock_after_tour: true
+    dock_command_topic: /dock_command
     max_2opt_iterations: 10000
 
 docking_server:
