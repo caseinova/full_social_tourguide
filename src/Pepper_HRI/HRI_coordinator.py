@@ -5,14 +5,14 @@ import numpy as np
 
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String, Bool, UInt8MultiArray
-from ament_index_python.packages import PackageNotFoundError, get_package_share_directory
+from std_msgs.msg import String, UInt8MultiArray
 
 PACKAGE_NAME = 'pepper_hri'
 
 
 def get_package_asset_path(*parts):
     """Resolve installed package assets, falling back to the source tree."""
+    from ament_index_python.packages import PackageNotFoundError, get_package_share_directory
     try:
         base_path = get_package_share_directory(PACKAGE_NAME)
     except PackageNotFoundError:
@@ -26,87 +26,80 @@ class HRICoordinatorNode(Node):
 
         # --- STATE MANAGEMENT VARIABLES ---
         self.current_exhibit = None     # Name of the active single exhibit being processed
-        self.human_present = False      # Tracking presence state
+        self.human_present_raw = None   # Ambiguous data type storage from subsystem tracking
         self.last_human_time = 0.0      # Timestamp for "recently seen" logic
-        self.is_explaining = False      # Track if a timed explanation session is running
-        self.explanation_timer = None   # Reference to the active ROS explanation timer
+        self.is_explaining = False      # Track if an explanation session is active
 
-        # Placeholder database for exhibit durations (and script file lookups)
-        # Likely need to change the keys into a value in the dictionary pair, depending on input
-        self.exhibit_database = {
-            "walking_robot_exhibit": {"duration": 15.0, "text_file": "tablet_assets/exhibition_explanation/walking_robot_exhibit_explanation.txt"},
-            "combination_vault_exhibit": {"duration": 22.5, "text_file": "tablet_assets/exhibition_explanation/combination_vault_exhibit_explanation.txt"},
-            "LED_crystal_exhibit": {"duration": 18.0, "text_file": "tablet_assets/exhibition_explanation/LED_crystal_exhibit_explanation.txt"},
-            "glowing_double_peundulum_exhibit": {"duration": 15.0, "text_file": "tablet_assets/exhibition_explanation/glowing_double_pendulum_exhibit_explanation.txt"},
-            "crane_exhibit": {"duration": 15.0, "text_file": "tablet_assets/exhibition_explanation/crane_exhibit_explanation.txt"},
-            "articulated_lamp_exhibit": {"duration": 15.0, "text_file": "tablet_assets/exhibition_explanation/articulated_lamp_exhibit_explanation.txt"}
-        }
+        # --- DYNAMIC DATABASE INITIALIZATION ---
+        self.exhibit_database = {}
+        self.load_dynamic_database()
 
         # --- SUBSCRIBERS ---
         self.create_subscription(String, '/current_tour', self.current_command, 10)
-        self.create_subscription(String, '/human_present', self.human_present_callback, 10)
         self.create_subscription(UInt8MultiArray, '/audio/audio', self.audio_callback, 10)
+        self.create_subscription(String, '/human_present', self.human_present_callback, 10)
+        self.create_subscription(String, '/done_talking', self.done_talking_callback, 10)
 
         # --- PUBLISHERS ---
-        self.save_tour_pub = self.create_publisher(String, '/save_tour_command', 10)
         self.spoken_words_pub = self.create_publisher(String, '/pepper/spoken_words', 10)
         self.gesture_pub = self.create_publisher(String, '/pepper/gesture_command', 10)
-        self.finished_explanation_pub = self.create_publisher(String, '/done_talking', 10)
         self.tablet_display = self.create_publisher(String, '/pepper/explain_exhibit', 10)
 
-        self.get_logger().info("HRI Coordinator Node successfully initialized with single-exhibit targeting.")
+        self.get_logger().info("HRI Coordinator Node successfully updated with a fully dynamic database map.")
 
-
-
-
-
+    def load_dynamic_database(self):
+        """Reads exhibition_commands.json from tablet_assets on startup."""
+        # CHANGE THIS LINE: include 'tablet_assets' in the asset path resolution
+        manifest_path = get_package_asset_path('tablet_assets', 'exhibition_commands.json')
+        
+        try:
+            if os.path.exists(manifest_path):
+                with open(manifest_path, 'r', encoding='utf-8') as f:
+                    self.exhibit_database = json.load(f)
+                self.get_logger().info(f"Successfully mapped {len(self.exhibit_database)} exhibits from manifest.")
+            else:
+                self.get_logger().error(f"Manifest file missing: {manifest_path}. Coordinator running with empty database.")
+        except Exception as e:
+            self.get_logger().error(f"Failed parsing dynamic manifest updates: {str(e)}")
 
     # --- CALLBACK HANDLERS ---
 
     def current_command(self, msg):
         """Receives a single target exhibit command directly."""
         try:
-            # Try parsing as JSON first in case the frontend still encapsulates it
             which_exhibit = msg.data.strip()
             if which_exhibit.startswith('{'):
                 data = json.loads(which_exhibit)
-                # Fallback to check if it's passed as a single command key or string
                 exhibit_name = data.get('exhibit', data.get('command', ''))
             else:
-                # Otherwise, it's just a clean, raw string argument
                 exhibit_name = which_exhibit
 
             if exhibit_name:
                 if exhibit_name in self.exhibit_database:
                     self.current_exhibit = exhibit_name
-                    
-                    # Relay down to the database logger saving topic
-                    # self.save_tour_pub.publish(msg) -- no longer needed, this will be published through the actual menu.html
-                    
-                    
                     self.start_explanation()
-                    self.get_logger().info(f"Publishing ' {self.current_exhibit} ' to /pepper/explain_exhibit")
-                    self.publish_tablet_exhibit(self.current_exhibit)
-
                 else:
                     self.get_logger().warn(f"Received unknown exhibit target: '{exhibit_name}'")
         except Exception as e:
             self.get_logger().error(f"Error processing single exhibit input: {str(e)}")
 
     def human_present_callback(self, msg):
-        """Tracks visitor presence and handles spatial greetings."""
-        self.human_present = msg.data
+        """Tracks raw variant inputs and triggers wave_hello updates anytime it is refreshed."""
+        self.human_present_raw = msg.data.strip()
+        is_present = bool(self.human_present_raw) and self.human_present_raw.lower() not in ['false', '0', 'no', 'none', 'empty']
         
-        if self.human_present:
+        if is_present:
             self.last_human_time = time.time()
             if not self.is_explaining:
-                self.get_logger().info("Human detected! Waving hello.")
+                self.get_logger().info(f"Presence update detected ({self.human_present_raw})! Waving hello.")
                 self.publish_gesture("wave_hello")
 
     def audio_callback(self, msg):
-        """Handles responsive listening states based on presence and audio amplitude thresholds."""
+        """Handles responsive listening states based on presence updates and audio amplitude thresholds."""
+        is_present = bool(self.human_present_raw) and str(self.human_present_raw).lower() not in ['false', '0', 'no', 'none', 'empty']
         time_since_human = time.time() - self.last_human_time
-        if not self.human_present and time_since_human > 10.0:
+        
+        if not is_present and time_since_human > 10.0:
             return
 
         raw_data = np.array(msg.data, dtype=np.uint8)
@@ -120,78 +113,68 @@ class HRICoordinatorNode(Node):
             self.get_logger().info(f"Audio threshold breached ({amplitude}) with human near. Listening...")
             self.publish_gesture("listen")
 
+    def done_talking_callback(self, msg):
+        """Terminates explanation loops immediately when 'done_speaking' signal is captured."""
+        signal = msg.data.strip()
+        
+        if signal == "done_speaking" and self.is_explaining:
+            self.get_logger().info(f"Received 'done_speaking' signal. Wrapping up {self.current_exhibit}.")
+            
+            self.is_explaining = False
+            exhibit_that_finished = self.current_exhibit
+            self.current_exhibit = None
 
+            self.publish_gesture("default")
+            self.get_logger().info(f"Successfully finished explanation for {exhibit_that_finished}.")
 
-
-
-
-    # --- CORE HRI ACTIONS & TIMERS ---
+    # --- CORE HRI ACTIONS ---
 
     def start_explanation(self):
-        """Loads text and starts the timed gesture loop directly for the set current_exhibit."""
+        """Loads text files, parses the explanation segment out, and flags the display."""
         if self.is_explaining:
             self.get_logger().warn("Already explaining an artifact. Ignoring duplicate trigger.")
             return
 
-        self.get_logger().info(f"Starting explanation processing for: {self.current_exhibit}")
+        self.get_logger().info(f"Starting event-driven presentation for: {self.current_exhibit}")
 
-        # Fetch configuration details from the database map
-        exhibit_info = self.exhibit_database.get(self.current_exhibit, {"duration": 10.0, "text_file": None})
-        duration = exhibit_info["duration"]
+        exhibit_info = self.exhibit_database.get(self.current_exhibit, {"text_file": None})
         text_file = exhibit_info["text_file"]
+        explanation_text = ""
 
-        # 1. Read and publish the speech text content for Pepper's TTS engine
         if text_file:
-            abs_text_path = get_package_asset_path(text_file)
+            # Paths inside the JSON generated by launch are already formatted clean relative strings
+            abs_text_path = get_package_asset_path('tablet_assets', text_file) if not text_file.startswith('tablet_assets') else get_package_asset_path(text_file)
             try:
-                with open(abs_text_path, 'r') as f:
-                    speech_text = f.read()
+                with open(abs_text_path, 'r', encoding='utf-8') as f:
+                    raw_content = f.read().strip()
                 
-                words_msg = String()
-                words_msg.data = speech_text
-                self.spoken_words_pub.publish(words_msg)
-            except Exception as e:
-                self.get_logger().error(f"Could not read speech file {text_file}: {str(e)}")
+                # Split using the pipeline delimiter: [index]|[title]|[explanation]
+                parts = raw_content.split('|')
+                if len(parts) >= 3:
+                    explanation_text = parts[2].strip()
+                else:
+                    explanation_text = raw_content
+                    self.get_logger().warn(f"Text file {text_file} lacked explicit '|' delimiters. Using full raw text.")
 
-        # 2. Enter the explaining state and engage animation
+                # 1. Send the extracted description text out to Pepper's TTS Engine
+                words_msg = String()
+                words_msg.data = explanation_text
+                self.spoken_words_pub.publish(words_msg)
+
+            except Exception as e:
+                self.get_logger().error(f"Could not read/parse speech file {text_file}: {str(e)}")
+
+        # 2. Enter active explaining state and drop into pose
         self.is_explaining = True
         self.publish_gesture("explain")
 
-        # 3. Create a dynamic, non-blocking ROS timer customized for this specific exhibit duration
-        self.get_logger().info(f"Setting explanation timer for {duration} seconds.")
-        self.explanation_timer = self.create_timer(duration, self.exhibition_timeout_callback)
-
-    def exhibition_timeout_callback(self):
-        """Triggers automatically when the specific exhibit's presentation timer concludes."""
-        self.get_logger().info(f"Explanation timeout reached for {self.current_exhibit}.")
-        
-        # 1. Clear out this specific timer instance instantly so it doesn't loop
-        if self.explanation_timer:
-            self.explanation_timer.destroy()
-            self.explanation_timer = None
-
-        # 2. Update operational states
-        self.is_explaining = False
-        exhibit_that_finished = self.current_exhibit
-        self.current_exhibit = None  # Reset tracking state so it's ready for the next single input
-
-        # 3. Publish finishing sequences to control topic listeners
-        self.publish_gesture("default")
-        
-        finish_msg = Bool()
-        finish_msg.data = True
-        self.finished_explanation_pub.publish(finish_msg)
-        self.get_logger().info(f"Successfully wrapped up presentation for {exhibit_that_finished}.")
-
-
-
-
-
+        # 3. Publish only the extracted [description] payload to the tablet view pipeline
+        self.get_logger().info(f"Publishing extracted description text to /pepper/explain_exhibit")
+        self.publish_tablet_exhibit(explanation_text if explanation_text else self.current_exhibit)
 
     # --- HELPER UTILITIES ---
 
     def publish_gesture(self, gesture_name):
-        """Helper to quickly drop clean string data keys onto the gesture topic stream."""
         msg = String()
         msg.data = gesture_name
         self.gesture_pub.publish(msg)
