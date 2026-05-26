@@ -1,0 +1,997 @@
+ros2 launch tour_manager pepper_locomotion_llm.launch.py enable_pepper:=false enable_intent:=true turtlebot_mode:=sim
+[INFO] [launch]: All log files can be found below /home/tom/.ros/log/2026-05-26-20-44-20-602286-tom-15914
+[INFO] [launch]: Default logging verbosity is set to INFO
+urdf_file_name : turtlebot3_waffle_pi.urdf
+urdf_file_name : turtlebot3_waffle_pi.urdf
+urdf_file_name : turtlebot3_waffle_pi.urdf
+[INFO] [gzserver-1]: process started with pid [15928]
+[INFO] [gzclient-2]: process started with pid [15930]
+[INFO] [robot_state_publisher-3]: process started with pid [15932]
+[INFO] [spawn_entity.py-4]: process started with pid [15934]
+[INFO] [component_container_isolated-5]: process started with pid [15936]
+[INFO] [rviz2-6]: process started with pid [15938]
+[INFO] [tour_manager-7]: process started with pid [15940]
+[INFO] [tour_saver-8]: process started with pid [15942]
+[INFO] [tour_guide_start-9]: process started with pid [15944]
+[INFO] [subtour_start-10]: process started with pid [15946]
+[INFO] [opennav_docking-11]: process started with pid [15948]
+[INFO] [lifecycle_manager-12]: process started with pid [15950]
+[INFO] [dock_listener-13]: process started with pid [15952]
+[INFO] [listening-14]: process started with pid [15954]
+[INFO] [speech_to_text_node-15]: process started with pid [15956]
+[INFO] [speech_command_node-16]: process started with pid [15960]
+[INFO] [speech_debug_node-17]: process started with pid [15964]
+[INFO] [speech_response_node-18]: process started with pid [15986]
+[INFO] [tour_intent_bridge_node-19]: process started with pid [15997]
+[INFO] [tsp_gui-20]: process started with pid [16005]
+[INFO] [emotion_node-21]: process started with pid [16017]
+[INFO] [waypoint_speaker-22]: process started with pid [16019]
+[rviz2-6] Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+[lifecycle_manager-12] [INFO] [1779792262.849570139] [lifecycle_manager_docking]: Creating
+[robot_state_publisher-3] [INFO] [1779792262.872418444] [robot_state_publisher]: got segment base_footprint
+[robot_state_publisher-3] [INFO] [1779792262.872542446] [robot_state_publisher]: got segment base_link
+[robot_state_publisher-3] [INFO] [1779792262.872551123] [robot_state_publisher]: got segment base_scan
+[robot_state_publisher-3] [INFO] [1779792262.872556984] [robot_state_publisher]: got segment camera_link
+[robot_state_publisher-3] [INFO] [1779792262.872562725] [robot_state_publisher]: got segment camera_rgb_frame
+[robot_state_publisher-3] [INFO] [1779792262.872568435] [robot_state_publisher]: got segment camera_rgb_optical_frame
+[robot_state_publisher-3] [INFO] [1779792262.872574156] [robot_state_publisher]: got segment caster_back_left_link
+[robot_state_publisher-3] [INFO] [1779792262.872579606] [robot_state_publisher]: got segment caster_back_right_link
+[robot_state_publisher-3] [INFO] [1779792262.872585036] [robot_state_publisher]: got segment imu_link
+[robot_state_publisher-3] [INFO] [1779792262.872590517] [robot_state_publisher]: got segment wheel_left_link
+[robot_state_publisher-3] [INFO] [1779792262.872596057] [robot_state_publisher]: got segment wheel_right_link
+[lifecycle_manager-12] [INFO] [1779792262.872518151] [lifecycle_manager_docking]: Creating and initializing lifecycle service clients
+[opennav_docking-11] [INFO] [1779792262.883021451] [docking_server]: 
+[opennav_docking-11] 	docking_server lifecycle node launched. 
+[opennav_docking-11] 	Waiting on external lifecycle transitions to activate
+[opennav_docking-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[opennav_docking-11] [INFO] [1779792262.883330421] [docking_server]: Creating docking_server
+[lifecycle_manager-12] [INFO] [1779792262.888609141] [lifecycle_manager_docking]: Starting managed nodes bringup...
+[lifecycle_manager-12] [INFO] [1779792262.888683751] [lifecycle_manager_docking]: Configuring docking_server
+[opennav_docking-11] [INFO] [1779792262.891252259] [docking_server]: Configuring docking_server
+[opennav_docking-11] [INFO] [1779792262.891374298] [docking_server]: Controller frequency set to 20.0000Hz
+[subtour_start-10] [INFO] [1779792262.909918890] [subtour]: Listening for TSP waypoint lists on '/tsp_command' and sending tours to '/follow_waypoints'
+[opennav_docking-11] [INFO] [1779792262.951819349] [docking_server]: Created charging dock plugin simple_charging_dock of type opennav_docking::SimpleChargingDock
+[opennav_docking-11] [WARN] [1779792262.961569006] [docking_server]: Dock database filepath nor dock parameters set. Docking actions can only be executed specifying the dock pose via the action request. Or update the dock database via the reload_database service.
+[opennav_docking-11] [INFO] [1779792262.961637544] [docking_server]: Docking Server has 1 dock types and 0 dock instances available.
+[lifecycle_manager-12] [INFO] [1779792262.965590859] [lifecycle_manager_docking]: Activating docking_server
+[opennav_docking-11] [INFO] [1779792262.965742333] [docking_server]: Activating docking_server
+[opennav_docking-11] [INFO] [1779792262.980741376] [docking_server]: Creating bond (docking_server) to lifecycle manager.
+[lifecycle_manager-12] [INFO] [1779792262.984020877] [lifecycle_manager_docking]: Managed nodes are active
+[component_container_isolated-5] [INFO] [1779792262.999346051] [nav2_container]: Load Library: /opt/ros/humble/lib/libcontroller_server_core.so
+[component_container_isolated-5] [INFO] [1779792263.016322492] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_controller::ControllerServer>
+[component_container_isolated-5] [INFO] [1779792263.016395038] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_controller::ControllerServer>
+[component_container_isolated-5] [INFO] [1779792263.064402191] [controller_server]: 
+[component_container_isolated-5] 	controller_server lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.089447106] [controller_server]: Creating controller server
+[component_container_isolated-5] [INFO] [1779792263.126027026] [local_costmap.local_costmap]: 
+[component_container_isolated-5] 	local_costmap lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.127454653] [local_costmap.local_costmap]: Creating Costmap
+[component_container_isolated-5] [INFO] [1779792263.139954228] [nav2_container]: Load Library: /opt/ros/humble/lib/libmap_server_core.so
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/controller_server' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792263.169539999] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::CostmapFilterInfoServer>
+[component_container_isolated-5] [INFO] [1779792263.169629016] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapSaver>
+[component_container_isolated-5] [INFO] [1779792263.169640728] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>
+[component_container_isolated-5] [INFO] [1779792263.169649995] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>
+[component_container_isolated-5] [INFO] [1779792263.215260212] [map_server]: 
+[component_container_isolated-5] 	map_server lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.215355712] [map_server]: Creating
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/map_server' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792263.220576854] [nav2_container]: Load Library: /opt/ros/humble/lib/libsmoother_server_core.so
+[component_container_isolated-5] [INFO] [1779792263.225906791] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_smoother::SmootherServer>
+[component_container_isolated-5] [INFO] [1779792263.225963337] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_smoother::SmootherServer>
+[component_container_isolated-5] [INFO] [1779792263.262314648] [smoother_server]: 
+[component_container_isolated-5] 	smoother_server lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.276932496] [smoother_server]: Creating smoother server
+[component_container_isolated-5] [INFO] [1779792263.280447348] [nav2_container]: Load Library: /opt/ros/humble/lib/libamcl_core.so
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/smoother_server' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792263.291800563] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_amcl::AmclNode>
+[component_container_isolated-5] [INFO] [1779792263.291875273] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_amcl::AmclNode>
+[tour_intent_bridge_node-19] [INFO] [1779792263.428364634] [tour_intent_bridge_node]: Tour intent bridge ready. Waiting for intents.
+[waypoint_speaker-22] [INFO] [1779792263.450702681] [waypoint_speaker_node]: Waypoint speaker ready. Waiting for retrieve_description service.
+[speech_response_node-18] [INFO] [1779792263.481444621] [speech_response_node]: Speech response node ready. mute=False
+[emotion_node-21] [INFO] [1779792263.533738124] [emotion_node]: Emotion → idle
+[emotion_node-21] [INFO] [1779792263.534291672] [emotion_node]: Emotion node ready. Publishing on /emotions.
+[tour_saver-8] [INFO] [1779792263.600373326] [tour_saver]: Initializing tour saver
+[speech_debug_node-17] [INFO] [1779792263.624412293] [speech_debug_node]: Speech debug node ready. Echo /speech/debug for voice-only tracing.
+[dock_listener-13] [INFO] [1779792263.650913640] [dock_listener]: Dock listener ready; using OpenNav docking action "/dock_robot"
+[rviz2-6] [INFO] [1779792263.674139112] [rviz2]: Stereo is NOT SUPPORTED
+[rviz2-6] [INFO] [1779792263.674597061] [rviz2]: OpenGl version: 4.6 (GLSL 4.6)
+[component_container_isolated-5] [INFO] [1779792263.694150966] [amcl]: 
+[component_container_isolated-5] 	amcl lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.698653381] [amcl]: Creating
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/amcl' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792263.708403549] [nav2_container]: Load Library: /opt/ros/humble/lib/libplanner_server_core.so
+[rviz2-6] [INFO] [1779792263.708963439] [rviz2]: Stereo is NOT SUPPORTED
+[component_container_isolated-5] [INFO] [1779792263.710637649] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_planner::PlannerServer>
+[component_container_isolated-5] [INFO] [1779792263.710675720] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_planner::PlannerServer>
+[tour_manager-7] [INFO] [1779792263.717876186] [tour_manager]: Initializing tour manager
+[spawn_entity.py-4] [INFO] [1779792263.727262992] [spawn_entity]: Spawn Entity started
+[spawn_entity.py-4] [INFO] [1779792263.728913127] [spawn_entity]: Loading entity XML from file /home/tom/big_ws/install/turtlebot3_gazebo/share/turtlebot3_gazebo/models/turtlebot3_waffle_pi/model.sdf
+[spawn_entity.py-4] [INFO] [1779792263.731419898] [spawn_entity]: Waiting for service /spawn_entity, timeout = 30
+[spawn_entity.py-4] [INFO] [1779792263.732006058] [spawn_entity]: Waiting for service /spawn_entity
+[component_container_isolated-5] [INFO] [1779792263.748456102] [planner_server]: 
+[component_container_isolated-5] 	planner_server lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.753030101] [planner_server]: Creating
+[component_container_isolated-5] [INFO] [1779792263.810484914] [global_costmap.global_costmap]: 
+[component_container_isolated-5] 	global_costmap lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792263.811647244] [global_costmap.global_costmap]: Creating Costmap
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/planner_server' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792263.843093505] [nav2_container]: Load Library: /opt/ros/humble/lib/libnav2_lifecycle_manager_core.so
+[component_container_isolated-5] [INFO] [1779792263.844232892] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>
+[component_container_isolated-5] [INFO] [1779792263.844267727] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>
+[tsp_gui-20] Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+[speech_to_text_node-15] [INFO] [1779792263.915527172] [speech_to_text_node]: faster-whisper not installed; falling back to Google STT. Install with: pip install faster-whisper
+[speech_to_text_node-15] [INFO] [1779792263.917463634] [speech_to_text_node]: Speech-to-text microphone listener started. device=default energy_threshold=150 dynamic_energy=False calibrate_ambient_noise=False. Say a wake phrase like 'hey pepper'.
+[speech_to_text_node-15] ALSA lib pcm_dsnoop.c:601:(snd_pcm_dsnoop_open) unable to open slave
+[speech_to_text_node-15] ALSA lib pcm_dmix.c:1032:(snd_pcm_dmix_open) unable to open slave
+[speech_to_text_node-15] ALSA lib pcm.c:2664:(snd_pcm_open_noupdate) Unknown PCM cards.pcm.rear
+[speech_to_text_node-15] ALSA lib pcm.c:2664:(snd_pcm_open_noupdate) Unknown PCM cards.pcm.center_lfe
+[speech_to_text_node-15] ALSA lib pcm.c:2664:(snd_pcm_open_noupdate) Unknown PCM cards.pcm.side
+[speech_to_text_node-15] ALSA lib pcm_oss.c:397:(_snd_pcm_oss_open) Cannot open device /dev/dsp
+[speech_to_text_node-15] ALSA lib pcm_oss.c:397:(_snd_pcm_oss_open) Cannot open device /dev/dsp
+[speech_to_text_node-15] ALSA lib confmisc.c:160:(snd_config_get_card) Invalid field card
+[speech_to_text_node-15] ALSA lib pcm_usb_stream.c:482:(_snd_pcm_usb_stream_open) Invalid card 'card'
+[speech_to_text_node-15] ALSA lib confmisc.c:160:(snd_config_get_card) Invalid field card
+[speech_to_text_node-15] ALSA lib pcm_usb_stream.c:482:(_snd_pcm_usb_stream_open) Invalid card 'card'
+[speech_to_text_node-15] ALSA lib pcm_dmix.c:1032:(snd_pcm_dmix_open) unable to open slave
+[component_container_isolated-5] [INFO] [1779792263.959306325] [lifecycle_manager_localization]: Creating
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/lifecycle_manager_localization' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792263.965438046] [lifecycle_manager_localization]: Creating and initializing lifecycle service clients
+[component_container_isolated-5] [INFO] [1779792263.965991514] [nav2_container]: Load Library: /opt/ros/humble/lib/libbehavior_server_core.so
+[component_container_isolated-5] [INFO] [1779792263.973420087] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<behavior_server::BehaviorServer>
+[component_container_isolated-5] [INFO] [1779792263.973478356] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<behavior_server::BehaviorServer>
+[component_container_isolated-5] [INFO] [1779792263.981034970] [lifecycle_manager_localization]: Starting managed nodes bringup...
+[component_container_isolated-5] [INFO] [1779792263.981100232] [lifecycle_manager_localization]: Configuring map_server
+[component_container_isolated-5] [INFO] [1779792263.981378915] [map_server]: Configuring
+[component_container_isolated-5] [INFO] [1779792263.981461810] [map_io]: Loading yaml file: /home/tom/big_ws/install/turtlebot3_navigation2/share/turtlebot3_navigation2/map/map.yaml
+[component_container_isolated-5] [INFO] [1779792263.982284453] [map_io]: resolution: 0.05
+[component_container_isolated-5] [INFO] [1779792263.982298590] [map_io]: origin[0]: -10
+[component_container_isolated-5] [INFO] [1779792263.982303579] [map_io]: origin[1]: -10
+[component_container_isolated-5] [INFO] [1779792263.982307547] [map_io]: origin[2]: 0
+[component_container_isolated-5] [INFO] [1779792263.982311734] [map_io]: free_thresh: 0.196
+[component_container_isolated-5] [INFO] [1779792263.982315802] [map_io]: occupied_thresh: 0.65
+[component_container_isolated-5] [INFO] [1779792263.982321112] [map_io]: mode: trinary
+[component_container_isolated-5] [INFO] [1779792263.982353032] [map_io]: negate: 0
+[component_container_isolated-5] [INFO] [1779792263.986368734] [map_io]: Loading image_file: /home/tom/big_ws/install/turtlebot3_navigation2/share/turtlebot3_navigation2/map/map.pgm
+[component_container_isolated-5] [INFO] [1779792264.004304114] [map_io]: Read map /home/tom/big_ws/install/turtlebot3_navigation2/share/turtlebot3_navigation2/map/map.pgm: 384 X 384 map @ 0.05 m/cell
+[component_container_isolated-5] [INFO] [1779792264.012010588] [behavior_server]: 
+[component_container_isolated-5] 	behavior_server lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792264.021377447] [lifecycle_manager_localization]: Configuring amcl
+[component_container_isolated-5] [INFO] [1779792264.022198116] [amcl]: Configuring
+[component_container_isolated-5] [INFO] [1779792264.022371241] [amcl]: initTransforms
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/behavior_server' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792264.029936730] [nav2_container]: Load Library: /opt/ros/humble/lib/libbt_navigator_core.so
+[component_container_isolated-5] [INFO] [1779792264.036240845] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_bt_navigator::BtNavigator>
+[component_container_isolated-5] [INFO] [1779792264.036310034] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_bt_navigator::BtNavigator>
+[component_container_isolated-5] [INFO] [1779792264.053676838] [amcl]: initPubSub
+[tsp_gui-20] [INFO] [1779792264.068141027] [tsp_gui_node]: Fetched 0 waypoints from service
+[tsp_gui-20] [INFO] [1779792264.069397193] [tsp_gui_node]: Loaded 0 waypoints from DB: /home/tom/big_ws/tours.db
+[component_container_isolated-5] [INFO] [1779792264.073553078] [amcl]: Subscribed to map topic.
+[component_container_isolated-5] [INFO] [1779792264.082766258] [lifecycle_manager_localization]: Activating map_server
+[component_container_isolated-5] [INFO] [1779792264.083164746] [map_server]: Activating
+[component_container_isolated-5] [INFO] [1779792264.083758910] [map_server]: Creating bond (map_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792264.083764531] [amcl]: Received a 384 X 384 map @ 0.050 m/pix
+[component_container_isolated-5] [INFO] [1779792264.095087057] [bt_navigator]: 
+[component_container_isolated-5] 	bt_navigator lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792264.095196783] [bt_navigator]: Creating
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/bt_navigator' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792264.100704023] [nav2_container]: Load Library: /opt/ros/humble/lib/libwaypoint_follower_core.so
+[component_container_isolated-5] [INFO] [1779792264.102717229] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_waypoint_follower::WaypointFollower>
+[component_container_isolated-5] [INFO] [1779792264.102749689] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_waypoint_follower::WaypointFollower>
+[component_container_isolated-5] [INFO] [1779792264.125943242] [waypoint_follower]: 
+[component_container_isolated-5] 	waypoint_follower lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792264.128067736] [waypoint_follower]: Creating
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/waypoint_follower' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792264.132111441] [nav2_container]: Load Library: /opt/ros/humble/lib/libvelocity_smoother_core.so
+[component_container_isolated-5] [INFO] [1779792264.134331154] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_velocity_smoother::VelocitySmoother>
+[component_container_isolated-5] [INFO] [1779792264.134370758] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_velocity_smoother::VelocitySmoother>
+[component_container_isolated-5] [INFO] [1779792264.161515582] [velocity_smoother]: 
+[component_container_isolated-5] 	velocity_smoother lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/velocity_smoother' in container '/nav2_container'
+[component_container_isolated-5] [INFO] [1779792264.164968227] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>
+[component_container_isolated-5] [INFO] [1779792264.165006740] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_lifecycle_manager::LifecycleManager>
+[component_container_isolated-5] [INFO] [1779792264.182646715] [lifecycle_manager_navigation]: Creating
+[component_container_isolated-5] [INFO] [1779792264.187033674] [lifecycle_manager_navigation]: Creating and initializing lifecycle service clients
+[INFO] [launch_ros.actions.load_composable_nodes]: Loaded node '/lifecycle_manager_navigation' in container '/nav2_container'
+[speech_command_node-16] [INFO] [1779792264.197196996] [speech_command_node]: Speech command node ready. enable_llm=True provider=groq llm_client=True
+[component_container_isolated-5] [INFO] [1779792264.200533113] [lifecycle_manager_localization]: Server map_server connected with bond.
+[component_container_isolated-5] [INFO] [1779792264.200582336] [lifecycle_manager_localization]: Activating amcl
+[component_container_isolated-5] [INFO] [1779792264.200863222] [amcl]: Activating
+[component_container_isolated-5] [INFO] [1779792264.200928986] [amcl]: Creating bond (amcl) to lifecycle manager.
+[rviz2-6] [INFO] [1779792264.211792902] [rviz2]: Trying to create a map of size 384 x 384 using 1 swatches
+[component_container_isolated-5] [INFO] [1779792264.216136509] [lifecycle_manager_navigation]: Starting managed nodes bringup...
+[component_container_isolated-5] [INFO] [1779792264.216202343] [lifecycle_manager_navigation]: Configuring controller_server
+[component_container_isolated-5] [INFO] [1779792264.216494050] [controller_server]: Configuring controller interface
+[component_container_isolated-5] [INFO] [1779792264.217002173] [controller_server]: getting goal checker plugins..
+[component_container_isolated-5] [INFO] [1779792264.217227876] [controller_server]: Controller frequency set to 10.0000Hz
+[component_container_isolated-5] [INFO] [1779792264.217290554] [local_costmap.local_costmap]: Configuring
+[rviz2-6] [ERROR] [1779792264.217768130] [rviz2]: Vertex Program:rviz/glsl120/indexed_8bit_image.vert Fragment Program:rviz/glsl120/indexed_8bit_image.frag GLSL link result : 
+[rviz2-6] active samplers with a different type refer to the same texture image unit
+[component_container_isolated-5] [INFO] [1779792264.228539492] [local_costmap.local_costmap]: Using plugin "obstacle_layer"
+[component_container_isolated-5] [INFO] [1779792264.233388928] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[component_container_isolated-5] [INFO] [1779792264.238208808] [local_costmap.local_costmap]: Initialized plugin "obstacle_layer"
+[component_container_isolated-5] [INFO] [1779792264.238247952] [local_costmap.local_costmap]: Using plugin "voxel_layer"
+[component_container_isolated-5] [INFO] [1779792264.239154342] [local_costmap.local_costmap]: Subscribed to Topics: scan
+[component_container_isolated-5] [INFO] [1779792264.248018478] [local_costmap.local_costmap]: Initialized plugin "voxel_layer"
+[component_container_isolated-5] [INFO] [1779792264.248074022] [local_costmap.local_costmap]: Using plugin "inflation_layer"
+[component_container_isolated-5] [INFO] [1779792264.249107921] [local_costmap.local_costmap]: Initialized plugin "inflation_layer"
+[component_container_isolated-5] [ERROR] [1779792264.256572321] [local_costmap.local_costmap]: The configured inflation radius (0.150) is smaller than the computed inscribed radius (0.225) of your footprint, it is highly recommended to set inflation radius to be at least as big as the inscribed radius to avoid collisions
+[component_container_isolated-5] [INFO] [1779792264.263786663] [controller_server]: Created progress_checker : progress_checker of type nav2_controller::SimpleProgressChecker
+[component_container_isolated-5] [INFO] [1779792264.265804347] [controller_server]: Created goal checker : general_goal_checker of type nav2_controller::SimpleGoalChecker
+[component_container_isolated-5] [INFO] [1779792264.266449607] [controller_server]: Controller Server has general_goal_checker  goal checkers available.
+[component_container_isolated-5] [INFO] [1779792264.271652836] [controller_server]: Created controller : FollowPath of type dwb_core::DWBLocalPlanner
+[component_container_isolated-5] [INFO] [1779792264.273661875] [controller_server]: Setting transform_tolerance to 0.200000
+[component_container_isolated-5] [INFO] [1779792264.296307739] [controller_server]: Using critic "RotateToGoal" (dwb_critics::RotateToGoalCritic)
+[component_container_isolated-5] [INFO] [1779792264.297699881] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.297988452] [controller_server]: Using critic "Oscillation" (dwb_critics::OscillationCritic)
+[component_container_isolated-5] [INFO] [1779792264.298715305] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.298921362] [controller_server]: Using critic "BaseObstacle" (dwb_critics::BaseObstacleCritic)
+[component_container_isolated-5] [INFO] [1779792264.299219691] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.299393898] [controller_server]: Using critic "GoalAlign" (dwb_critics::GoalAlignCritic)
+[component_container_isolated-5] [INFO] [1779792264.299927338] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.300128466] [controller_server]: Using critic "PathAlign" (dwb_critics::PathAlignCritic)
+[component_container_isolated-5] [INFO] [1779792264.300718783] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.301039755] [controller_server]: Using critic "PathDist" (dwb_critics::PathDistCritic)
+[component_container_isolated-5] [INFO] [1779792264.301439755] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.301635302] [controller_server]: Using critic "GoalDist" (dwb_critics::GoalDistCritic)
+[component_container_isolated-5] [INFO] [1779792264.302188700] [controller_server]: Critic plugin initialized
+[component_container_isolated-5] [INFO] [1779792264.302217294] [controller_server]: Controller Server has FollowPath  controllers available.
+[component_container_isolated-5] [INFO] [1779792264.317527590] [lifecycle_manager_navigation]: Configuring smoother_server
+[component_container_isolated-5] [INFO] [1779792264.317670909] [smoother_server]: Configuring smoother server
+[component_container_isolated-5] [INFO] [1779792264.318664702] [lifecycle_manager_localization]: Server amcl connected with bond.
+[component_container_isolated-5] [INFO] [1779792264.319587764] [lifecycle_manager_localization]: Managed nodes are active
+[component_container_isolated-5] [INFO] [1779792264.319669858] [lifecycle_manager_localization]: Creating bond timer...
+[component_container_isolated-5] [INFO] [1779792264.327388194] [smoother_server]: Created smoother : simple_smoother of type nav2_smoother::SimpleSmoother
+[component_container_isolated-5] [INFO] [1779792264.328361259] [smoother_server]: Smoother Server has simple_smoother  smoothers available.
+[component_container_isolated-5] [INFO] [1779792264.339132843] [lifecycle_manager_navigation]: Configuring planner_server
+[component_container_isolated-5] [INFO] [1779792264.339313462] [planner_server]: Configuring
+[component_container_isolated-5] [INFO] [1779792264.339366641] [global_costmap.global_costmap]: Configuring
+[component_container_isolated-5] [INFO] [1779792264.349065272] [global_costmap.global_costmap]: Using plugin "static_layer"
+[component_container_isolated-5] [INFO] [1779792264.350665423] [global_costmap.global_costmap]: Subscribing to the map topic (/map) with transient local durability
+[component_container_isolated-5] [INFO] [1779792264.351830609] [global_costmap.global_costmap]: Initialized plugin "static_layer"
+[component_container_isolated-5] [INFO] [1779792264.351856888] [global_costmap.global_costmap]: Using plugin "obstacle_layer"
+[component_container_isolated-5] [INFO] [1779792264.352827579] [global_costmap.global_costmap]: Subscribed to Topics: scan
+[component_container_isolated-5] [INFO] [1779792264.357282044] [global_costmap.global_costmap]: Initialized plugin "obstacle_layer"
+[component_container_isolated-5] [INFO] [1779792264.357314174] [global_costmap.global_costmap]: Using plugin "voxel_layer"
+[component_container_isolated-5] [INFO] [1779792264.358417804] [global_costmap.global_costmap]: Subscribed to Topics: scan
+[component_container_isolated-5] [INFO] [1779792264.366393664] [global_costmap.global_costmap]: Initialized plugin "voxel_layer"
+[component_container_isolated-5] [INFO] [1779792264.366442665] [global_costmap.global_costmap]: Using plugin "inflation_layer"
+[component_container_isolated-5] [INFO] [1779792264.367339588] [global_costmap.global_costmap]: Initialized plugin "inflation_layer"
+[component_container_isolated-5] [ERROR] [1779792264.375803793] [global_costmap.global_costmap]: The configured inflation radius (0.150) is smaller than the computed inscribed radius (0.225) of your footprint, it is highly recommended to set inflation radius to be at least as big as the inscribed radius to avoid collisions
+[component_container_isolated-5] [INFO] [1779792264.383438353] [planner_server]: Created global planner plugin GridBased of type nav2_navfn_planner/NavfnPlanner
+[component_container_isolated-5] [INFO] [1779792264.383499518] [planner_server]: Configuring plugin GridBased of type NavfnPlanner
+[component_container_isolated-5] [INFO] [1779792264.384885477] [planner_server]: Planner Server has GridBased  planners available.
+[component_container_isolated-5] [INFO] [1779792264.401218371] [lifecycle_manager_navigation]: Configuring behavior_server
+[component_container_isolated-5] [INFO] [1779792264.401421322] [behavior_server]: Configuring
+[component_container_isolated-5] [INFO] [1779792264.413651892] [behavior_server]: Creating behavior plugin spin of type nav2_behaviors/Spin
+[component_container_isolated-5] [INFO] [1779792264.415672221] [behavior_server]: Configuring spin
+[component_container_isolated-5] [INFO] [1779792264.421765029] [global_costmap.global_costmap]: StaticLayer: Resizing costmap to 384 X 384 at 0.050000 m/pix
+[component_container_isolated-5] [INFO] [1779792264.425995233] [behavior_server]: Creating behavior plugin backup of type nav2_behaviors/BackUp
+[component_container_isolated-5] [INFO] [1779792264.428108376] [behavior_server]: Configuring backup
+[component_container_isolated-5] [INFO] [1779792264.438182131] [behavior_server]: Creating behavior plugin drive_on_heading of type nav2_behaviors/DriveOnHeading
+[component_container_isolated-5] [INFO] [1779792264.440311264] [behavior_server]: Configuring drive_on_heading
+[component_container_isolated-5] [INFO] [1779792264.452079477] [behavior_server]: Creating behavior plugin wait of type nav2_behaviors/Wait
+[component_container_isolated-5] [INFO] [1779792264.454423644] [behavior_server]: Configuring wait
+[component_container_isolated-5] [INFO] [1779792264.464726708] [lifecycle_manager_navigation]: Configuring bt_navigator
+[component_container_isolated-5] [INFO] [1779792264.464868604] [bt_navigator]: Configuring
+[component_container_isolated-5] [INFO] [1779792264.559754804] [lifecycle_manager_navigation]: Configuring waypoint_follower
+[component_container_isolated-5] [INFO] [1779792264.559881752] [waypoint_follower]: Configuring
+[component_container_isolated-5] [INFO] [1779792264.577288651] [waypoint_follower]: Created waypoint_task_executor : talk_at_waypoint of type robot_tour::TalkAtWaypoint
+[component_container_isolated-5] [INFO] [1779792264.583598245] [waypoint_follower]: TalkAtWaypoint initialized: enabled=true, talk_topic=/talk_command, pause=200 ms
+[component_container_isolated-5] [INFO] [1779792264.584072615] [lifecycle_manager_navigation]: Configuring velocity_smoother
+[component_container_isolated-5] [INFO] [1779792264.584241802] [velocity_smoother]: Configuring velocity smoother
+[component_container_isolated-5] [INFO] [1779792264.589825175] [lifecycle_manager_navigation]: Activating controller_server
+[component_container_isolated-5] [INFO] [1779792264.589990675] [controller_server]: Activating
+[component_container_isolated-5] [INFO] [1779792264.590059123] [local_costmap.local_costmap]: Activating
+[component_container_isolated-5] [INFO] [1779792264.590077939] [local_costmap.local_costmap]: Checking transform
+[component_container_isolated-5] [INFO] [1779792264.590152058] [local_costmap.local_costmap]: Timed out waiting for transform from base_link to odom to become available, tf error: Invalid frame ID "odom" passed to canTransform argument target_frame - frame does not exist
+[spawn_entity.py-4] [INFO] [1779792264.745979470] [spawn_entity]: Calling service /spawn_entity
+[tsp_gui-20] [INFO] [1779792264.819658223] [tsp_gui_node]: TSP GUI node ready — listening on /tsp_gui/show
+[gzserver-1] [INFO] [1779792265.053779934] [turtlebot3_imu]: <initial_orientation_as_reference> is unset, using default value of false to comply with REP 145 (world as orientation reference)
+[component_container_isolated-5] [INFO] [1779792265.090166491] [local_costmap.local_costmap]: Timed out waiting for transform from base_link to odom to become available, tf error: Invalid frame ID "odom" passed to canTransform argument target_frame - frame does not exist
+[spawn_entity.py-4] [INFO] [1779792265.143411869] [spawn_entity]: Spawn status: SpawnEntity: Successfully spawned entity [waffle_pi]
+[INFO] [spawn_entity.py-4]: process has finished cleanly [pid 15934]
+[gzserver-1] [INFO] [1779792265.545087768] [camera_driver]: Publishing camera info to [/camera/camera_info]
+[component_container_isolated-5] [INFO] [1779792265.590167139] [local_costmap.local_costmap]: Timed out waiting for transform from base_link to odom to become available, tf error: Invalid frame ID "odom" passed to canTransform argument target_frame - frame does not exist
+[gzserver-1] [INFO] [1779792265.668866429] [turtlebot3_diff_drive]: Wheel pair 1 separation set to [0.287000m]
+[gzserver-1] [INFO] [1779792265.668942511] [turtlebot3_diff_drive]: Wheel pair 1 diameter set to [0.066000m]
+[gzserver-1] [INFO] [1779792265.670833408] [turtlebot3_diff_drive]: Subscribed to [/cmd_vel]
+[gzserver-1] [INFO] [1779792265.673897976] [turtlebot3_diff_drive]: Advertise odometry on [/odom]
+[gzserver-1] [INFO] [1779792265.677681733] [turtlebot3_diff_drive]: Publishing odom transforms between [odom] and [base_footprint]
+[gzserver-1] [INFO] [1779792265.695863986] [turtlebot3_joint_state]: Going to publish joint [wheel_left_joint]
+[gzserver-1] [INFO] [1779792265.695938976] [turtlebot3_joint_state]: Going to publish joint [wheel_right_joint]
+[component_container_isolated-5] [INFO] [1779792265.903222109] [amcl]: createLaserObject
+[component_container_isolated-5] [INFO] [1779792266.090367512] [local_costmap.local_costmap]: start
+[component_container_isolated-5] [INFO] [1779792266.294180095] [controller_server]: Creating bond (controller_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792266.403756659] [lifecycle_manager_navigation]: Server controller_server connected with bond.
+[component_container_isolated-5] [INFO] [1779792266.403803106] [lifecycle_manager_navigation]: Activating smoother_server
+[component_container_isolated-5] [INFO] [1779792266.404175404] [smoother_server]: Activating
+[component_container_isolated-5] [INFO] [1779792266.404221561] [smoother_server]: Creating bond (smoother_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792266.512242927] [lifecycle_manager_navigation]: Server smoother_server connected with bond.
+[component_container_isolated-5] [INFO] [1779792266.512280888] [lifecycle_manager_navigation]: Activating planner_server
+[component_container_isolated-5] [INFO] [1779792266.512585830] [planner_server]: Activating
+[component_container_isolated-5] [INFO] [1779792266.512627598] [global_costmap.global_costmap]: Activating
+[component_container_isolated-5] [INFO] [1779792266.512671130] [global_costmap.global_costmap]: Checking transform
+[component_container_isolated-5] [INFO] [1779792266.512680958] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[component_container_isolated-5] [INFO] [1779792267.012741458] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[component_container_isolated-5] [WARN] [1779792267.501831262] [amcl]: AMCL cannot publish a pose or update the transform. Please set the initial pose...
+[component_container_isolated-5] [INFO] [1779792267.512754179] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-6] [INFO] [1779792267.926434283] [rviz2]: Message Filter dropping message: frame 'base_scan' at time 0,541 for reason 'discarding message because the queue is full'
+[component_container_isolated-5] [INFO] [1779792268.012758534] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-6] [INFO] [1779792268.310431243] [rviz2]: Message Filter dropping message: frame 'odom' at time 0,919 for reason 'discarding message because the queue is full'
+[component_container_isolated-5] [INFO] [1779792268.512741418] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[component_container_isolated-5] [INFO] [1779792269.012740954] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[rviz2-6] [INFO] [1779792269.428004468] [rviz2]: Setting estimate pose: Frame:map, Position(-2.00603, -0.516173, 0), Orientation(0, 0, -0.00544278, 0.999985) = Angle: -0.0108856
+[component_container_isolated-5] [INFO] [1779792269.428253244] [amcl]: initialPoseReceived
+[component_container_isolated-5] [INFO] [1779792269.428344726] [amcl]: Setting pose (4.000000): -2.006 -0.516 -0.011
+[component_container_isolated-5] [INFO] [1779792269.512754376] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Invalid frame ID "map" passed to canTransform argument target_frame - frame does not exist
+[component_container_isolated-5] [INFO] [1779792270.012794968] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Lookup would require extrapolation into the past.  Requested time 4.625000 but the earliest data is at time 5.141000, when looking up transform from frame [base_link] to frame [map]
+[speech_to_text_node-15] [INFO] [1779792270.120691801] [speech_to_text_node]: Speech recognition could not understand the audio.
+[component_container_isolated-5] [INFO] [1779792270.512753507] [global_costmap.global_costmap]: Timed out waiting for transform from base_link to map to become available, tf error: Lookup would require extrapolation into the past.  Requested time 5.135000 but the earliest data is at time 5.141000, when looking up transform from frame [base_link] to frame [map]
+[rviz2-6] [INFO] [1779792270.518875430] [rviz2]: Message Filter dropping message: frame 'base_scan' at time 3,141 for reason 'discarding message because the queue is full'
+[component_container_isolated-5] [INFO] [1779792271.012821091] [global_costmap.global_costmap]: start
+[rviz2-6] [INFO] [1779792271.094900069] [rviz2]: Trying to create a map of size 60 x 60 using 1 swatches
+[rviz2-6] [INFO] [1779792272.024019297] [rviz2]: Trying to create a map of size 384 x 384 using 1 swatches
+[component_container_isolated-5] [INFO] [1779792272.064785639] [planner_server]: Activating plugin GridBased of type NavfnPlanner
+[component_container_isolated-5] [INFO] [1779792272.066615031] [planner_server]: Creating bond (planner_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792272.170833574] [lifecycle_manager_navigation]: Server planner_server connected with bond.
+[component_container_isolated-5] [INFO] [1779792272.170918353] [lifecycle_manager_navigation]: Activating behavior_server
+[component_container_isolated-5] [INFO] [1779792272.171554777] [behavior_server]: Activating
+[component_container_isolated-5] [INFO] [1779792272.171586286] [behavior_server]: Activating spin
+[component_container_isolated-5] [INFO] [1779792272.171631541] [behavior_server]: Activating backup
+[component_container_isolated-5] [INFO] [1779792272.171647531] [behavior_server]: Activating drive_on_heading
+[component_container_isolated-5] [INFO] [1779792272.171661677] [behavior_server]: Activating wait
+[component_container_isolated-5] [INFO] [1779792272.171682637] [behavior_server]: Creating bond (behavior_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792272.277904648] [lifecycle_manager_navigation]: Server behavior_server connected with bond.
+[component_container_isolated-5] [INFO] [1779792272.277943551] [lifecycle_manager_navigation]: Activating bt_navigator
+[component_container_isolated-5] [INFO] [1779792272.278251499] [bt_navigator]: Activating
+[component_container_isolated-5] [INFO] [1779792272.386360660] [bt_navigator]: Creating bond (bt_navigator) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792272.491383432] [lifecycle_manager_navigation]: Server bt_navigator connected with bond.
+[component_container_isolated-5] [INFO] [1779792272.491470124] [lifecycle_manager_navigation]: Activating waypoint_follower
+[component_container_isolated-5] [INFO] [1779792272.491949814] [waypoint_follower]: Activating
+[component_container_isolated-5] [INFO] [1779792272.492019505] [waypoint_follower]: Creating bond (waypoint_follower) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792272.598864695] [lifecycle_manager_navigation]: Server waypoint_follower connected with bond.
+[component_container_isolated-5] [INFO] [1779792272.598902887] [lifecycle_manager_navigation]: Activating velocity_smoother
+[component_container_isolated-5] [INFO] [1779792272.599248775] [velocity_smoother]: Activating
+[component_container_isolated-5] [INFO] [1779792272.599317695] [velocity_smoother]: Creating bond (velocity_smoother) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792272.710005863] [lifecycle_manager_navigation]: Server velocity_smoother connected with bond.
+[component_container_isolated-5] [INFO] [1779792272.710055807] [lifecycle_manager_navigation]: Managed nodes are active
+[component_container_isolated-5] [INFO] [1779792272.710066346] [lifecycle_manager_navigation]: Creating bond timer...
+[speech_to_text_node-15] [INFO] [1779792275.239552734] [speech_to_text_node]: Speech recognition could not understand the audio.
+[rviz2-6] [INFO] [1779792275.333924880] [rviz2]: Message Filter dropping message: frame 'odom' at time 0,900 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[rviz2-6] [INFO] [1779792277.911214398] [rviz2]: Message Filter dropping message: frame 'odom' at time 3,503 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[rviz2-6] [INFO] [1779792278.319340986] [rviz2]: Message Filter dropping message: frame 'odom' at time 3,900 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[rviz2-6] [INFO] [1779792278.727430334] [rviz2]: Message Filter dropping message: frame 'base_scan' at time 3,341 for reason 'the timestamp on the message is earlier than all the data in the transform cache'
+[speech_to_text_node-15] [INFO] [1779792280.015743681] [speech_to_text_node]: Speech recognition could not understand the audio.
+^C[WARNING] [launch]: user interrupted with ctrl-c (SIGINT)
+[rviz2-6] [INFO] [1779792284.111039693] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-12] [INFO] [1779792284.111041125] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-12] [INFO] [1779792284.111225090] [lifecycle_manager_docking]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_docking)
+[component_container_isolated-5] [INFO] [1779792284.111074147] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[component_container_isolated-5] [INFO] [1779792284.111220692] [lifecycle_manager_navigation]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_navigation)
+[component_container_isolated-5] [INFO] [1779792284.111305131] [lifecycle_manager_navigation]: Terminating bond timer...
+[opennav_docking-11] [INFO] [1779792284.111075630] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-11] [INFO] [1779792284.111224279] [docking_server]: Running Nav2 LifecycleNode rcl preshutdown (docking_server)
+[opennav_docking-11] [INFO] [1779792284.111322643] [docking_server]: Deactivating docking_server
+[tour_guide_start-9] [INFO] [1779792284.111061554] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[tour_manager-7] Traceback (most recent call last):
+[tour_manager-7]   File "/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_manager", line 33, in <module>
+[tour_manager-7]     sys.exit(load_entry_point('tour-manager', 'console_scripts', 'tour_manager')())
+[tour_manager-7]   File "/home/tom/big_ws/build/tour_manager/tour_manager/tour_manager_service.py", line 103, in main
+[tour_manager-7]     rclpy.spin(tour_manager)
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[tour_manager-7]     executor.spin_once()
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[tour_manager-7]     self._spin_once_impl(timeout_sec)
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[tour_manager-7]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[tour_manager-7]     return next(self._cb_iter)
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[tour_manager-7]     wait_set.wait(timeout_nsec)
+[tour_manager-7] KeyboardInterrupt
+[dock_listener-13] Traceback (most recent call last):
+[dock_listener-13]   File "/home/tom/big_ws/install/docking/lib/docking/dock_listener", line 33, in <module>
+[dock_listener-13]     sys.exit(load_entry_point('docking', 'console_scripts', 'dock_listener')())
+[dock_listener-13]   File "/home/tom/big_ws/build/docking/docking/dock_listener.py", line 259, in main
+[dock_listener-13]     rclpy.spin(docking_node)
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[dock_listener-13]     executor.spin_once()
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[dock_listener-13]     self._spin_once_impl(timeout_sec)
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[dock_listener-13]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[dock_listener-13]     return next(self._cb_iter)
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[dock_listener-13]     wait_set.wait(timeout_nsec)
+[dock_listener-13] KeyboardInterrupt
+[robot_state_publisher-3] [INFO] [1779792284.111754804] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[tour_saver-8] Traceback (most recent call last):
+[tour_saver-8]   File "/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_saver", line 33, in <module>
+[tour_saver-8]     sys.exit(load_entry_point('tour-manager', 'console_scripts', 'tour_saver')())
+[tour_saver-8]   File "/home/tom/big_ws/build/tour_manager/tour_manager/tour_saver.py", line 46, in main
+[tour_saver-8]     rclpy.spin(tour_saver)
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[tour_saver-8]     executor.spin_once()
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[tour_saver-8]     self._spin_once_impl(timeout_sec)
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[tour_saver-8]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[tour_saver-8]     return next(self._cb_iter)
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[tour_saver-8]     wait_set.wait(timeout_nsec)
+[tour_saver-8] KeyboardInterrupt
+[tsp_gui-20] Exception in thread Thread-1 (<lambda>):
+[tsp_gui-20] Traceback (most recent call last):
+[tsp_gui-20]   File "/usr/lib/python3.10/threading.py", line 1016, in _bootstrap_inner
+[tsp_gui-20]     self.run()
+[tsp_gui-20]   File "/usr/lib/python3.10/threading.py", line 953, in run
+[tsp_gui-20]     self._target(*self._args, **self._kwargs)
+[tsp_gui-20]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/tsp_gui_node.py", line 535, in <lambda>
+[tsp_gui-20]     ros_thread = threading.Thread(target=lambda: rclpy.spin(node), daemon=True)
+[tsp_gui-20]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[tsp_gui-20]     executor.spin_once()
+[tsp_gui-20]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[tsp_gui-20]     self._spin_once_impl(timeout_sec)
+[tsp_gui-20]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[tsp_gui-20]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[tsp_gui-20]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[tsp_gui-20]     return next(self._cb_iter)
+[tsp_gui-20]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 681, in _wait_for_ready_callbacks
+[tsp_gui-20]     raise ExternalShutdownException()
+[tsp_gui-20] rclpy.executors.ExternalShutdownException
+[listening-14] Traceback (most recent call last):
+[listening-14]   File "/home/tom/big_ws/install/speech_locomotion_interface/lib/speech_locomotion_interface/listening", line 33, in <module>
+[listening-14]     sys.exit(load_entry_point('speech-locomotion-interface', 'console_scripts', 'listening')())
+[listening-14]   File "/home/tom/big_ws/build/speech_locomotion_interface/speech_locomotion_interface/speech_listener.py", line 82, in main
+[listening-14]     rclpy.spin(minimal_subscriber)
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[listening-14]     executor.spin_once()
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[listening-14]     self._spin_once_impl(timeout_sec)
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[listening-14]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[listening-14]     return next(self._cb_iter)
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[listening-14]     wait_set.wait(timeout_nsec)
+[listening-14] KeyboardInterrupt
+[INFO] [robot_state_publisher-3]: process has finished cleanly [pid 15932]
+[INFO] [lifecycle_manager-12]: process has finished cleanly [pid 15950]
+[speech_command_node-16] Traceback (most recent call last):
+[speech_command_node-16]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_command_node", line 33, in <module>
+[speech_command_node-16]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'speech_command_node')())
+[speech_command_node-16]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_command_node.py", line 105, in main
+[speech_command_node-16]     rclpy.spin(node)
+[speech_command_node-16]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[speech_command_node-16]     executor.spin_once()
+[speech_command_node-16]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[speech_command_node-16]     self._spin_once_impl(timeout_sec)
+[speech_command_node-16]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[speech_command_node-16]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[speech_command_node-16]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[speech_command_node-16]     return next(self._cb_iter)
+[speech_command_node-16]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[speech_command_node-16]     wait_set.wait(timeout_nsec)
+[speech_command_node-16] KeyboardInterrupt
+[subtour_start-10] [INFO] [1779792284.112441051] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[waypoint_speaker-22] Traceback (most recent call last):
+[waypoint_speaker-22]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/waypoint_speaker", line 33, in <module>
+[waypoint_speaker-22]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'waypoint_speaker')())
+[waypoint_speaker-22]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/waypoint_speaker_node.py", line 137, in main
+[waypoint_speaker-22]     rclpy.spin(node)
+[waypoint_speaker-22]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[waypoint_speaker-22]     executor.spin_once()
+[waypoint_speaker-22]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[waypoint_speaker-22]     self._spin_once_impl(timeout_sec)
+[waypoint_speaker-22]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[waypoint_speaker-22]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[waypoint_speaker-22]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[waypoint_speaker-22]     return next(self._cb_iter)
+[waypoint_speaker-22]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[waypoint_speaker-22]     wait_set.wait(timeout_nsec)
+[waypoint_speaker-22] KeyboardInterrupt
+[lifecycle_manager-12] [INFO] [1779792284.133104578] [lifecycle_manager_docking]: Destroying lifecycle_manager_docking
+[opennav_docking-11] [INFO] [1779792284.154195817] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[opennav_docking-11] [INFO] [1779792284.165049424] [docking_server]: Cleaning up docking_server
+[opennav_docking-11] [INFO] [1779792284.188543420] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[opennav_docking-11] [INFO] [1779792284.198126584] [docking_server]: Destroying
+[speech_debug_node-17] Traceback (most recent call last):
+[speech_debug_node-17]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_debug_node.py", line 30, in main
+[speech_debug_node-17]     rclpy.spin(node)
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[speech_debug_node-17]     executor.spin_once()
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[speech_debug_node-17]     self._spin_once_impl(timeout_sec)
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[speech_debug_node-17]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[speech_debug_node-17]     return next(self._cb_iter)
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[speech_debug_node-17]     wait_set.wait(timeout_nsec)
+[speech_debug_node-17] KeyboardInterrupt
+[speech_debug_node-17] 
+[speech_debug_node-17] During handling of the above exception, another exception occurred:
+[speech_debug_node-17] 
+[speech_debug_node-17] Traceback (most recent call last):
+[speech_debug_node-17]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_debug_node", line 33, in <module>
+[speech_debug_node-17]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'speech_debug_node')())
+[speech_debug_node-17]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_debug_node.py", line 33, in main
+[speech_debug_node-17]     rclpy.shutdown()
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[speech_debug_node-17]     _shutdown(context=context)
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[speech_debug_node-17]     return context.shutdown()
+[speech_debug_node-17]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[speech_debug_node-17]     self.__context.shutdown()
+[speech_debug_node-17] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[speech_to_text_node-15] Traceback (most recent call last):
+[speech_to_text_node-15]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_to_text_node.py", line 320, in main
+[speech_to_text_node-15]     rclpy.spin(node)
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[speech_to_text_node-15]     executor.spin_once()
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[speech_to_text_node-15]     self._spin_once_impl(timeout_sec)
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[speech_to_text_node-15]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[speech_to_text_node-15]     return next(self._cb_iter)
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[speech_to_text_node-15]     wait_set.wait(timeout_nsec)
+[speech_to_text_node-15] KeyboardInterrupt
+[speech_to_text_node-15] 
+[speech_to_text_node-15] During handling of the above exception, another exception occurred:
+[speech_to_text_node-15] 
+[speech_to_text_node-15] Traceback (most recent call last):
+[speech_to_text_node-15]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_to_text_node", line 33, in <module>
+[speech_to_text_node-15]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'speech_to_text_node')())
+[speech_to_text_node-15]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_to_text_node.py", line 324, in main
+[speech_to_text_node-15]     rclpy.shutdown()
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[speech_to_text_node-15]     _shutdown(context=context)
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[speech_to_text_node-15]     return context.shutdown()
+[speech_to_text_node-15]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[speech_to_text_node-15]     self.__context.shutdown()
+[speech_to_text_node-15] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[ERROR] [waypoint_speaker-22]: process has died [pid 16019, exit code -2, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/waypoint_speaker --ros-args -r __node:=waypoint_speaker_node --params-file /tmp/launch_params_gg7225or'].
+[speech_response_node-18] Traceback (most recent call last):
+[speech_response_node-18]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_response_node.py", line 49, in main
+[speech_response_node-18]     rclpy.spin(node)
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[speech_response_node-18]     executor.spin_once()
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[speech_response_node-18]     self._spin_once_impl(timeout_sec)
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[speech_response_node-18]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[speech_response_node-18]     return next(self._cb_iter)
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[speech_response_node-18]     wait_set.wait(timeout_nsec)
+[speech_response_node-18] KeyboardInterrupt
+[speech_response_node-18] 
+[speech_response_node-18] During handling of the above exception, another exception occurred:
+[speech_response_node-18] 
+[speech_response_node-18] Traceback (most recent call last):
+[speech_response_node-18]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_response_node", line 33, in <module>
+[speech_response_node-18]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'speech_response_node')())
+[speech_response_node-18]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/speech_response_node.py", line 52, in main
+[speech_response_node-18]     rclpy.shutdown()
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[speech_response_node-18]     _shutdown(context=context)
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[speech_response_node-18]     return context.shutdown()
+[speech_response_node-18]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[speech_response_node-18]     self.__context.shutdown()
+[speech_response_node-18] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[emotion_node-21] Traceback (most recent call last):
+[emotion_node-21]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/emotion_node.py", line 101, in main
+[emotion_node-21]     rclpy.spin(node)
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[emotion_node-21]     executor.spin_once()
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[emotion_node-21]     self._spin_once_impl(timeout_sec)
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[emotion_node-21]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[emotion_node-21]     return next(self._cb_iter)
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[emotion_node-21]     wait_set.wait(timeout_nsec)
+[emotion_node-21] KeyboardInterrupt
+[emotion_node-21] 
+[emotion_node-21] During handling of the above exception, another exception occurred:
+[emotion_node-21] 
+[emotion_node-21] Traceback (most recent call last):
+[emotion_node-21]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/emotion_node", line 33, in <module>
+[emotion_node-21]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'emotion_node')())
+[emotion_node-21]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/emotion_node.py", line 104, in main
+[emotion_node-21]     rclpy.shutdown()
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[emotion_node-21]     _shutdown(context=context)
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[emotion_node-21]     return context.shutdown()
+[emotion_node-21]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[emotion_node-21]     self.__context.shutdown()
+[emotion_node-21] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[INFO] [subtour_start-10]: process has finished cleanly [pid 15946]
+[tour_intent_bridge_node-19] Traceback (most recent call last):
+[tour_intent_bridge_node-19]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/tour_intent_bridge_node.py", line 99, in main
+[tour_intent_bridge_node-19]     rclpy.spin(node)
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 229, in spin
+[tour_intent_bridge_node-19]     executor.spin_once()
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 808, in spin_once
+[tour_intent_bridge_node-19]     self._spin_once_impl(timeout_sec)
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 797, in _spin_once_impl
+[tour_intent_bridge_node-19]     handler, entity, node = self.wait_for_ready_callbacks(timeout_sec=timeout_sec)
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 780, in wait_for_ready_callbacks
+[tour_intent_bridge_node-19]     return next(self._cb_iter)
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/executors.py", line 677, in _wait_for_ready_callbacks
+[tour_intent_bridge_node-19]     wait_set.wait(timeout_nsec)
+[tour_intent_bridge_node-19] KeyboardInterrupt
+[tour_intent_bridge_node-19] 
+[tour_intent_bridge_node-19] During handling of the above exception, another exception occurred:
+[tour_intent_bridge_node-19] 
+[tour_intent_bridge_node-19] Traceback (most recent call last):
+[tour_intent_bridge_node-19]   File "/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/tour_intent_bridge_node", line 33, in <module>
+[tour_intent_bridge_node-19]     sys.exit(load_entry_point('turtlebot-llm-control', 'console_scripts', 'tour_intent_bridge_node')())
+[tour_intent_bridge_node-19]   File "/home/tom/big_ws/build/turtlebot_llm_control/turtlebot_llm_control/tour_intent_bridge_node.py", line 103, in main
+[tour_intent_bridge_node-19]     rclpy.shutdown()
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 130, in shutdown
+[tour_intent_bridge_node-19]     _shutdown(context=context)
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/utilities.py", line 58, in shutdown
+[tour_intent_bridge_node-19]     return context.shutdown()
+[tour_intent_bridge_node-19]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/context.py", line 102, in shutdown
+[tour_intent_bridge_node-19]     self.__context.shutdown()
+[tour_intent_bridge_node-19] rclpy._rclpy_pybind11.RCLError: failed to shutdown: rcl_shutdown already called on the given context, at ./src/rcl/init.c:241
+[INFO] [tour_guide_start-9]: process has finished cleanly [pid 15944]
+[ERROR] [tour_manager-7]: process has died [pid 15940, exit code -2, cmd '/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_manager --ros-args -r __node:=tour_manager -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[INFO] [opennav_docking-11]: process has finished cleanly [pid 15948]
+[ERROR] [tour_saver-8]: process has died [pid 15942, exit code -2, cmd '/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_saver --ros-args -r __node:=tour_saver -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[ERROR] [dock_listener-13]: process has died [pid 15952, exit code -2, cmd '/home/tom/big_ws/install/docking/lib/docking/dock_listener --ros-args -r __node:=dock_listener -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[ERROR] [listening-14]: process has died [pid 15954, exit code -2, cmd '/home/tom/big_ws/install/speech_locomotion_interface/lib/speech_locomotion_interface/listening --ros-args -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[ERROR] [speech_command_node-16]: process has died [pid 15960, exit code -2, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_command_node --ros-args -r __node:=speech_command_node --params-file /tmp/launch_params_dwvdw_lx -r /speech/intent:=/speech/intent'].
+[component_container_isolated-5] [INFO] [1779792284.474613837] [velocity_smoother]: Running Nav2 LifecycleNode rcl preshutdown (velocity_smoother)
+[component_container_isolated-5] [INFO] [1779792284.474697574] [velocity_smoother]: Deactivating
+[component_container_isolated-5] [INFO] [1779792284.474718223] [velocity_smoother]: Destroying bond (velocity_smoother) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792284.484833225] [velocity_smoother]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792284.484867870] [velocity_smoother]: Destroying bond (velocity_smoother) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792284.484876786] [waypoint_follower]: Running Nav2 LifecycleNode rcl preshutdown (waypoint_follower)
+[component_container_isolated-5] [INFO] [1779792284.484895502] [waypoint_follower]: Deactivating
+[component_container_isolated-5] [INFO] [1779792284.484906723] [waypoint_follower]: Destroying bond (waypoint_follower) to lifecycle manager.
+[ERROR] [speech_debug_node-17]: process has died [pid 15964, exit code 1, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_debug_node --ros-args -r __node:=speech_debug_node --params-file /tmp/launch_params_7z74jafd -r /speech/intent:=/speech/intent'].
+[component_container_isolated-5] [INFO] [1779792284.494999252] [waypoint_follower]: Cleaning up
+[ERROR] [emotion_node-21]: process has died [pid 16017, exit code 1, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/emotion_node --ros-args -r __node:=emotion_node --params-file /tmp/launch_params_vef1kdh_'].
+[ERROR] [speech_response_node-18]: process has died [pid 15986, exit code 1, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_response_node --ros-args -r __node:=speech_response_node --params-file /tmp/launch_params_jxhkgo7z'].
+[component_container_isolated-5] [INFO] [1779792284.503825276] [waypoint_follower]: Destroying bond (waypoint_follower) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792284.503847628] [behavior_server]: Running Nav2 LifecycleNode rcl preshutdown (behavior_server)
+[component_container_isolated-5] [INFO] [1779792284.503864029] [behavior_server]: Deactivating
+[component_container_isolated-5] [INFO] [1779792284.503881342] [behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792284.513993538] [behavior_server]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792284.517869027] [behavior_server]: Destroying bond (behavior_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792284.517887221] [planner_server]: Running Nav2 LifecycleNode rcl preshutdown (planner_server)
+[component_container_isolated-5] [INFO] [1779792284.517902941] [planner_server]: Deactivating
+[component_container_isolated-5] [INFO] [1779792284.517919582] [global_costmap.global_costmap]: Deactivating
+[ERROR] [speech_to_text_node-15]: process has died [pid 15956, exit code 1, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/speech_to_text_node --ros-args -r __node:=speech_to_text_node --params-file /tmp/launch_params_3szqyom8'].
+[ERROR] [tour_intent_bridge_node-19]: process has died [pid 15997, exit code 1, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/tour_intent_bridge_node --ros-args -r __node:=tour_intent_bridge_node --params-file /tmp/launch_params_f2m1lo5k -r /speech/intent:=/speech/intent'].
+[INFO] [gzserver-1]: process has finished cleanly [pid 15928]
+[INFO] [gzclient-2]: process has finished cleanly [pid 15930]
+[component_container_isolated-5] [INFO] [1779792285.012991686] [planner_server]: Deactivating plugin GridBased of type NavfnPlanner
+[component_container_isolated-5] [INFO] [1779792285.013052610] [planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.023267028] [planner_server]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.031444847] [global_costmap.global_costmap]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.034194143] [planner_server]: Cleaning up plugin GridBased of type NavfnPlanner
+[component_container_isolated-5] [INFO] [1779792285.034249477] [planner_server]: Destroying plugin GridBased of type NavfnPlanner
+[component_container_isolated-5] [INFO] [1779792285.041748563] [planner_server]: Destroying bond (planner_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.041775683] [amcl]: Running Nav2 LifecycleNode rcl preshutdown (amcl)
+[component_container_isolated-5] [INFO] [1779792285.041797975] [amcl]: Deactivating
+[component_container_isolated-5] [INFO] [1779792285.041813975] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.051987016] [amcl]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.055444621] [amcl]: Destroying bond (amcl) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.055461042] [lifecycle_manager_localization]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_localization)
+[component_container_isolated-5] [INFO] [1779792285.055470459] [lifecycle_manager_localization]: Terminating bond timer...
+[component_container_isolated-5] [INFO] [1779792285.077917692] [smoother_server]: Running Nav2 LifecycleNode rcl preshutdown (smoother_server)
+[component_container_isolated-5] [INFO] [1779792285.077980099] [smoother_server]: Deactivating
+[component_container_isolated-5] [INFO] [1779792285.078000257] [smoother_server]: Destroying bond (smoother_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.088099499] [smoother_server]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.096656268] [smoother_server]: Destroying bond (smoother_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.096687186] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[component_container_isolated-5] [INFO] [1779792285.096702715] [map_server]: Deactivating
+[component_container_isolated-5] [INFO] [1779792285.096727031] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.106839117] [map_server]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.106914218] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.106927403] [bt_navigator]: Running Nav2 LifecycleNode rcl preshutdown (bt_navigator)
+[component_container_isolated-5] [INFO] [1779792285.106991743] [bt_navigator]: Deactivating
+[component_container_isolated-5] [INFO] [1779792285.107011731] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.117112115] [bt_navigator]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.162484847] [bt_navigator]: Completed Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.162532516] [bt_navigator]: Destroying bond (bt_navigator) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.162540862] [controller_server]: Running Nav2 LifecycleNode rcl preshutdown (controller_server)
+[component_container_isolated-5] [INFO] [1779792285.162555540] [controller_server]: Deactivating
+[component_container_isolated-5] [INFO] [1779792285.162583071] [local_costmap.local_costmap]: Deactivating
+[component_container_isolated-5] [INFO] [1779792285.290579453] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792285.300745731] [controller_server]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.301325969] [local_costmap.local_costmap]: Cleaning up
+[component_container_isolated-5] [INFO] [1779792285.313634225] [controller_server]: Destroying bond (controller_server) to lifecycle manager.
+[ERROR] [rviz2-6]: process has died [pid 15938, exit code -11, cmd '/opt/ros/humble/lib/rviz2/rviz2 -d /home/tom/big_ws/install/turtlebot3_navigation2/share/turtlebot3_navigation2/rviz/tb3_navigation2.rviz --ros-args -r __node:=rviz2 --params-file /tmp/launch_params_b4e9z0be'].
+[ERROR] [tsp_gui-20]: process[tsp_gui-20] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[ERROR] [component_container_isolated-5]: process[component_container_isolated-5] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[INFO] [tsp_gui-20]: sending signal 'SIGTERM' to process[tsp_gui-20]
+[INFO] [component_container_isolated-5]: sending signal 'SIGTERM' to process[component_container_isolated-5]
+[component_container_isolated-5] [INFO] [1779792289.265065892] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[ERROR] [tsp_gui-20]: process[tsp_gui-20] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[ERROR] [component_container_isolated-5]: process[component_container_isolated-5] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[INFO] [tsp_gui-20]: sending signal 'SIGKILL' to process[tsp_gui-20]
+[INFO] [component_container_isolated-5]: sending signal 'SIGKILL' to process[component_container_isolated-5]
+[ERROR] [tsp_gui-20]: process has died [pid 16005, exit code -9, cmd '/home/tom/big_ws/install/turtlebot_llm_control/lib/turtlebot_llm_control/tsp_gui --ros-args -r __node:=tsp_gui_node --params-file /tmp/launch_params_nq1n3zdb'].
+[ERROR] [component_container_isolated-5]: process has died [pid 15936, exit code -9, cmd '/opt/ros/humble/lib/rclcpp_components/component_container_isolated --ros-args --log-level info --ros-args -r __node:=nav2_container --params-file /tmp/launch_params_e_3ipo3v --params-file /tmp/launch_params_j_414kuc -r /tf:=tf -r /tf_static:=tf_static'].
+tom@tom:~/big_ws$ ros2 launch tour_manager pepper_locomotion_llm.launch.py enable_pepper:=true enable_intent:=true turtlebot_mode:=sim
+[INFO] [launch]: All log files can be found below /home/tom/.ros/log/2026-05-26-20-45-14-901310-tom-16538
+[INFO] [launch]: Default logging verbosity is set to INFO
+urdf_file_name : turtlebot3_waffle_pi.urdf
+urdf_file_name : turtlebot3_waffle_pi.urdf
+urdf_file_name : turtlebot3_waffle_pi.urdf
+[ERROR] [launch]: Caught exception in launch (see debug for traceback): [Errno 2] No such file or directory: '/home/tom/big_ws/install/pepper_hri/share/pepper_hri/pepper_real.launch.py'
+[INFO] [gzserver-1]: process started with pid [16553]
+[INFO] [gzclient-2]: process started with pid [16555]
+[INFO] [robot_state_publisher-3]: process started with pid [16557]
+[INFO] [spawn_entity.py-4]: process started with pid [16559]
+[INFO] [component_container_isolated-5]: process started with pid [16561]
+[INFO] [rviz2-6]: process started with pid [16563]
+[INFO] [tour_manager-7]: process started with pid [16565]
+[INFO] [tour_saver-8]: process started with pid [16567]
+[INFO] [tour_guide_start-9]: process started with pid [16569]
+[INFO] [subtour_start-10]: process started with pid [16571]
+[INFO] [opennav_docking-11]: process started with pid [16573]
+[INFO] [lifecycle_manager-12]: process started with pid [16575]
+[INFO] [dock_listener-13]: process started with pid [16577]
+[INFO] [listening-14]: process started with pid [16580]
+[robot_state_publisher-3] [INFO] [1779792317.138057534] [robot_state_publisher]: got segment base_footprint
+[robot_state_publisher-3] [INFO] [1779792317.138180815] [robot_state_publisher]: got segment base_link
+[robot_state_publisher-3] [INFO] [1779792317.138191665] [robot_state_publisher]: got segment base_scan
+[robot_state_publisher-3] [INFO] [1779792317.138198398] [robot_state_publisher]: got segment camera_link
+[robot_state_publisher-3] [INFO] [1779792317.138205191] [robot_state_publisher]: got segment camera_rgb_frame
+[robot_state_publisher-3] [INFO] [1779792317.138211984] [robot_state_publisher]: got segment camera_rgb_optical_frame
+[robot_state_publisher-3] [INFO] [1779792317.138218646] [robot_state_publisher]: got segment caster_back_left_link
+[robot_state_publisher-3] [INFO] [1779792317.138225208] [robot_state_publisher]: got segment caster_back_right_link
+[robot_state_publisher-3] [INFO] [1779792317.138231009] [robot_state_publisher]: got segment imu_link
+[robot_state_publisher-3] [INFO] [1779792317.138236650] [robot_state_publisher]: got segment wheel_left_link
+[robot_state_publisher-3] [INFO] [1779792317.138242250] [robot_state_publisher]: got segment wheel_right_link
+[component_container_isolated-5] [INFO] [1779792317.139621968] [nav2_container]: Load Library: /opt/ros/humble/lib/libmap_server_core.so
+[component_container_isolated-5] [INFO] [1779792317.161136150] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::CostmapFilterInfoServer>
+[component_container_isolated-5] [INFO] [1779792317.161172859] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapSaver>
+[component_container_isolated-5] [INFO] [1779792317.161186405] [nav2_container]: Found class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>
+[component_container_isolated-5] [INFO] [1779792317.161193338] [nav2_container]: Instantiate class: rclcpp_components::NodeFactoryTemplate<nav2_map_server::MapServer>
+[component_container_isolated-5] [INFO] [1779792317.175012948] [map_server]: 
+[component_container_isolated-5] 	map_server lifecycle node launched. 
+[component_container_isolated-5] 	Waiting on external lifecycle transitions to activate
+[component_container_isolated-5] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[component_container_isolated-5] [INFO] [1779792317.175083039] [map_server]: Creating
+[rviz2-6] Warning: Ignoring XDG_SESSION_TYPE=wayland on Gnome. Use QT_QPA_PLATFORM=wayland to run on Wayland anyway.
+[subtour_start-10] [INFO] [1779792317.164227609] [subtour]: Listening for TSP waypoint lists on '/tsp_command' and sending tours to '/follow_waypoints'
+[opennav_docking-11] [INFO] [1779792317.160171982] [docking_server]: 
+[opennav_docking-11] 	docking_server lifecycle node launched. 
+[opennav_docking-11] 	Waiting on external lifecycle transitions to activate
+[opennav_docking-11] 	See https://design.ros2.org/articles/node_lifecycle.html for more information.
+[opennav_docking-11] [INFO] [1779792317.160415880] [docking_server]: Creating docking_server
+[lifecycle_manager-12] [INFO] [1779792317.153119074] [lifecycle_manager_docking]: Creating
+[lifecycle_manager-12] [INFO] [1779792317.155232718] [lifecycle_manager_docking]: Creating and initializing lifecycle service clients
+[lifecycle_manager-12] [INFO] [1779792317.164749768] [lifecycle_manager_docking]: Starting managed nodes bringup...
+[lifecycle_manager-12] [INFO] [1779792317.164786467] [lifecycle_manager_docking]: Configuring docking_server
+[INFO] [gzserver-1]: sending signal 'SIGINT' to process[gzserver-1]
+[INFO] [gzclient-2]: sending signal 'SIGINT' to process[gzclient-2]
+[INFO] [robot_state_publisher-3]: sending signal 'SIGINT' to process[robot_state_publisher-3]
+[INFO] [spawn_entity.py-4]: sending signal 'SIGINT' to process[spawn_entity.py-4]
+[INFO] [component_container_isolated-5]: sending signal 'SIGINT' to process[component_container_isolated-5]
+[INFO] [rviz2-6]: sending signal 'SIGINT' to process[rviz2-6]
+[ERROR] [gzserver-1]: process has died [pid 16553, exit code -2, cmd 'gzserver /home/tom/big_ws/install/turtlebot3_gazebo/share/turtlebot3_gazebo/worlds/turtlebot3_world.world -slibgazebo_ros_init.so -slibgazebo_ros_factory.so -slibgazebo_ros_force_system.so'].
+[INFO] [tour_manager-7]: sending signal 'SIGINT' to process[tour_manager-7]
+[ERROR] [gzclient-2]: process has died [pid 16555, exit code -2, cmd 'gzclient --gui-client-plugin=libgazebo_ros_eol_gui.so'].
+[INFO] [tour_saver-8]: sending signal 'SIGINT' to process[tour_saver-8]
+[INFO] [tour_guide_start-9]: sending signal 'SIGINT' to process[tour_guide_start-9]
+[INFO] [subtour_start-10]: sending signal 'SIGINT' to process[subtour_start-10]
+[ERROR] [rviz2-6]: process has died [pid 16563, exit code -2, cmd '/opt/ros/humble/lib/rviz2/rviz2 -d /home/tom/big_ws/install/turtlebot3_navigation2/share/turtlebot3_navigation2/rviz/tb3_navigation2.rviz --ros-args -r __node:=rviz2 --params-file /tmp/launch_params_np37vepa'].
+[INFO] [opennav_docking-11]: sending signal 'SIGINT' to process[opennav_docking-11]
+[INFO] [lifecycle_manager-12]: sending signal 'SIGINT' to process[lifecycle_manager-12]
+[ERROR] [spawn_entity.py-4]: process has died [pid 16559, exit code -2, cmd '/opt/ros/humble/lib/gazebo_ros/spawn_entity.py -entity waffle_pi -file /home/tom/big_ws/install/turtlebot3_gazebo/share/turtlebot3_gazebo/models/turtlebot3_waffle_pi/model.sdf -x -2.0 -y -0.5 -z 0.01 --ros-args'].
+[INFO] [dock_listener-13]: sending signal 'SIGINT' to process[dock_listener-13]
+[INFO] [listening-14]: sending signal 'SIGINT' to process[listening-14]
+[robot_state_publisher-3] [INFO] [1779792317.216088570] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[spawn_entity.py-4] Traceback (most recent call last):
+[spawn_entity.py-4]   File "/opt/ros/humble/lib/gazebo_ros/spawn_entity.py", line 27, in <module>
+[spawn_entity.py-4]     from gazebo_msgs.srv import DeleteEntity
+[spawn_entity.py-4]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/gazebo_msgs/srv/__init__.py", line 21, in <module>
+[spawn_entity.py-4]     from gazebo_msgs.srv._set_joint_properties import SetJointProperties  # noqa: F401
+[spawn_entity.py-4]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[spawn_entity.py-4]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[spawn_entity.py-4]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[spawn_entity.py-4]   File "<frozen importlib._bootstrap_external>", line 879, in exec_module
+[spawn_entity.py-4]   File "<frozen importlib._bootstrap_external>", line 1026, in get_code
+[spawn_entity.py-4]   File "<frozen importlib._bootstrap_external>", line 689, in _code_to_timestamp_pyc
+[spawn_entity.py-4] KeyboardInterrupt
+[component_container_isolated-5] [INFO] [1779792317.221537700] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[component_container_isolated-5] [INFO] [1779792317.221655311] [map_server]: Running Nav2 LifecycleNode rcl preshutdown (map_server)
+[component_container_isolated-5] [INFO] [1779792317.221724771] [map_server]: Destroying bond (map_server) to lifecycle manager.
+[component_container_isolated-5] [INFO] [1779792317.223274698] [map_server]: Destroying
+[tour_manager-7] Traceback (most recent call last):
+[tour_manager-7]   File "/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_manager", line 33, in <module>
+[tour_manager-7]     sys.exit(load_entry_point('tour-manager', 'console_scripts', 'tour_manager')())
+[tour_manager-7]   File "/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_manager", line 25, in importlib_load_entry_point
+[tour_manager-7]     return next(matches).load()
+[tour_manager-7]   File "/usr/lib/python3.10/importlib/metadata/__init__.py", line 171, in load
+[tour_manager-7]     module = import_module(match.group('module'))
+[tour_manager-7]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[tour_manager-7]     return _bootstrap._gcd_import(name[level:], package, level)
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[tour_manager-7]   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+[tour_manager-7]   File "/home/tom/big_ws/build/tour_manager/tour_manager/tour_manager_service.py", line 3, in <module>
+[tour_manager-7]     from geometry_msgs.msg import PoseStamped
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/geometry_msgs/msg/__init__.py", line 3, in <module>
+[tour_manager-7]     from geometry_msgs.msg._accel_with_covariance import AccelWithCovariance  # noqa: F401
+[tour_manager-7]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/geometry_msgs/msg/_accel_with_covariance.py", line 13, in <module>
+[tour_manager-7]     import numpy  # noqa: E402, I100
+[tour_manager-7]   File "/usr/lib/python3/dist-packages/numpy/__init__.py", line 150, in <module>
+[tour_manager-7]     from . import core
+[tour_manager-7]   File "/usr/lib/python3/dist-packages/numpy/core/__init__.py", line 102, in <module>
+[tour_manager-7]     from . import _internal
+[tour_manager-7]   File "/usr/lib/python3/dist-packages/numpy/core/_internal.py", line 7, in <module>
+[tour_saver-8] Traceback (most recent call last):
+[tour_saver-8]   File "/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_saver", line 33, in <module>
+[tour_saver-8]     sys.exit(load_entry_point('tour-manager', 'console_scripts', 'tour_saver')())
+[tour_saver-8]   File "/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_saver", line 25, in importlib_load_entry_point
+[tour_saver-8]     return next(matches).load()
+[tour_saver-8]   File "/usr/lib/python3.10/importlib/metadata/__init__.py", line 171, in load
+[tour_saver-8]     module = import_module(match.group('module'))
+[tour_saver-8]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[tour_saver-8]     return _bootstrap._gcd_import(name[level:], package, level)
+[tour_saver-8]   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+[tour_saver-8]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[tour_saver-8]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[tour_saver-8]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[tour_saver-8]   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+[tour_saver-8]   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+[tour_saver-8]   File "/home/tom/big_ws/build/tour_manager/tour_manager/tour_saver.py", line 2, in <module>
+[tour_saver-8]     from rclpy.node import Node
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/node.py", line 44, in <module>
+[tour_saver-8]     from rclpy.client import Client
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/client.py", line 23, in <module>
+[tour_saver-8]     from rclpy.qos import QoSProfile
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/qos.py", line 21, in <module>
+[tour_saver-8]     from rclpy.duration import Duration
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/duration.py", line 15, in <module>
+[tour_saver-8]     import builtin_interfaces.msg
+[tour_saver-8]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/builtin_interfaces/msg/__init__.py", line 2, in <module>
+[tour_saver-8]     from builtin_interfaces.msg._time import Time  # noqa: F401
+[tour_saver-8] KeyboardInterrupt
+[tour_guide_start-9] [INFO] [1779792317.230583918] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[subtour_start-10] [INFO] [1779792317.231766135] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-11] [INFO] [1779792317.234066009] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[opennav_docking-11] [INFO] [1779792317.234156007] [docking_server]: Running Nav2 LifecycleNode rcl preshutdown (docking_server)
+[opennav_docking-11] [INFO] [1779792317.234203627] [docking_server]: Destroying bond (docking_server) to lifecycle manager.
+[opennav_docking-11] [INFO] [1779792317.234911565] [docking_server]: Destroying
+[tour_manager-7]     import ast
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[tour_manager-7]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[tour_manager-7]   File "<frozen importlib._bootstrap_external>", line 879, in exec_module
+[tour_manager-7]   File "<frozen importlib._bootstrap_external>", line 1012, in get_code
+[tour_manager-7]   File "<frozen importlib._bootstrap_external>", line 672, in _compile_bytecode
+[tour_manager-7] KeyboardInterrupt
+[lifecycle_manager-12] [INFO] [1779792317.236723904] [rclcpp]: signal_handler(SIGINT/SIGTERM)
+[lifecycle_manager-12] [INFO] [1779792317.236799466] [lifecycle_manager_docking]: Running Nav2 LifecycleManager rcl preshutdown (lifecycle_manager_docking)
+[listening-14] Traceback (most recent call last):
+[listening-14]   File "/home/tom/big_ws/install/speech_locomotion_interface/lib/speech_locomotion_interface/listening", line 33, in <module>
+[listening-14]     sys.exit(load_entry_point('speech-locomotion-interface', 'console_scripts', 'listening')())
+[listening-14]   File "/home/tom/big_ws/install/speech_locomotion_interface/lib/speech_locomotion_interface/listening", line 25, in importlib_load_entry_point
+[listening-14]     return next(matches).load()
+[listening-14]   File "/usr/lib/python3.10/importlib/metadata/__init__.py", line 171, in load
+[listening-14]     module = import_module(match.group('module'))
+[listening-14]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[listening-14]     return _bootstrap._gcd_import(name[level:], package, level)
+[listening-14]   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+[listening-14]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[listening-14]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[listening-14]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[listening-14]   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+[listening-14]   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+[listening-14]   File "/home/tom/big_ws/build/speech_locomotion_interface/speech_locomotion_interface/speech_listener.py", line 1, in <module>
+[listening-14]     import rclpy
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 49, in <module>
+[listening-14]     from rclpy.signals import install_signal_handlers
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/signals.py", line 15, in <module>
+[listening-14]     from rclpy.exceptions import InvalidHandle
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/exceptions.py", line 15, in <module>
+[listening-14]     from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+[listening-14]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/impl/implementation_singleton.py", line 32, in <module>
+[listening-14]     rclpy_implementation = import_c_library('._rclpy_pybind11', package)
+[listening-14]   File "/opt/ros/humble/lib/python3.10/site-packages/rpyutils/import_c_library.py", line 39, in import_c_library
+[listening-14]     return importlib.import_module(name, package=package)
+[listening-14]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[listening-14]     return _bootstrap._gcd_import(name[level:], package, level)
+[listening-14] KeyboardInterrupt
+[ERROR] [tour_saver-8]: process has died [pid 16567, exit code -2, cmd '/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_saver --ros-args -r __node:=tour_saver -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[dock_listener-13] Traceback (most recent call last):
+[dock_listener-13]   File "/home/tom/big_ws/install/docking/lib/docking/dock_listener", line 33, in <module>
+[dock_listener-13]     sys.exit(load_entry_point('docking', 'console_scripts', 'dock_listener')())
+[dock_listener-13]   File "/home/tom/big_ws/install/docking/lib/docking/dock_listener", line 25, in importlib_load_entry_point
+[dock_listener-13]     return next(matches).load()
+[dock_listener-13]   File "/usr/lib/python3.10/importlib/metadata/__init__.py", line 171, in load
+[dock_listener-13]     module = import_module(match.group('module'))
+[dock_listener-13]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[dock_listener-13]     return _bootstrap._gcd_import(name[level:], package, level)
+[dock_listener-13]   File "<frozen importlib._bootstrap>", line 1050, in _gcd_import
+[dock_listener-13]   File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+[dock_listener-13]   File "<frozen importlib._bootstrap>", line 1006, in _find_and_load_unlocked
+[dock_listener-13]   File "<frozen importlib._bootstrap>", line 688, in _load_unlocked
+[dock_listener-13]   File "<frozen importlib._bootstrap_external>", line 883, in exec_module
+[dock_listener-13]   File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+[dock_listener-13]   File "/home/tom/big_ws/build/docking/docking/dock_listener.py", line 4, in <module>
+[dock_listener-13]     import rclpy
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/__init__.py", line 49, in <module>
+[dock_listener-13]     from rclpy.signals import install_signal_handlers
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/signals.py", line 15, in <module>
+[dock_listener-13]     from rclpy.exceptions import InvalidHandle
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/exceptions.py", line 15, in <module>
+[dock_listener-13]     from rclpy.impl.implementation_singleton import rclpy_implementation as _rclpy
+[dock_listener-13]   File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/impl/implementation_singleton.py", line 32, in <module>
+[dock_listener-13]     rclpy_implementation = import_c_library('._rclpy_pybind11', package)
+[dock_listener-13]   File "/opt/ros/humble/lib/python3.10/site-packages/rpyutils/import_c_library.py", line 39, in import_c_library
+[dock_listener-13]     return importlib.import_module(name, package=package)
+[dock_listener-13]   File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+[dock_listener-13]     return _bootstrap._gcd_import(name[level:], package, level)
+[dock_listener-13] KeyboardInterrupt
+[ERROR] [listening-14]: process has died [pid 16580, exit code -2, cmd '/home/tom/big_ws/install/speech_locomotion_interface/lib/speech_locomotion_interface/listening --ros-args -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[ERROR] [tour_manager-7]: process has died [pid 16565, exit code -2, cmd '/home/tom/big_ws/install/tour_manager/lib/tour_manager/tour_manager --ros-args -r __node:=tour_manager -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[ERROR] [dock_listener-13]: process has died [pid 16577, exit code -2, cmd '/home/tom/big_ws/install/docking/lib/docking/dock_listener --ros-args -r __node:=dock_listener -r __ns:=/ --params-file /home/tom/big_ws/install/tour_manager/share/tour_manager/config/tour_manager_params.yaml'].
+[INFO] [robot_state_publisher-3]: process has finished cleanly [pid 16557]
+[ERROR] [launch]: Caught exception in launch (see debug for traceback): cannot use Destroyable because destruction was requested
+[INFO] [component_container_isolated-5]: process has finished cleanly [pid 16561]
+[INFO] [tour_guide_start-9]: process has finished cleanly [pid 16569]
+[INFO] [subtour_start-10]: process has finished cleanly [pid 16571]
+[INFO] [opennav_docking-11]: process has finished cleanly [pid 16573]
+[WARNING] [launch_ros.actions.load_composable_nodes]: Abandoning wait for the '/nav2_container/_container/load_node' service response, due to shutdown.
+Future exception was never retrieved
+future: <Future finished exception=InvalidHandle('cannot use Destroyable because destruction was requested')>
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/opt/ros/humble/lib/python3.10/site-packages/launch_ros/actions/load_composable_nodes.py", line 197, in _load_in_sequence
+    self._load_node(next_load_node_request, context)
+  File "/opt/ros/humble/lib/python3.10/site-packages/launch_ros/actions/load_composable_nodes.py", line 119, in _load_node
+    while not self.__rclpy_load_node_client.wait_for_service(timeout_sec=1.0):
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/client.py", line 180, in wait_for_service
+    return self.service_is_ready()
+  File "/opt/ros/humble/local/lib/python3.10/dist-packages/rclpy/client.py", line 159, in service_is_ready
+    with self.handle:
+rclpy._rclpy_pybind11.InvalidHandle: cannot use Destroyable because destruction was requested
+[ERROR] [lifecycle_manager-12]: process[lifecycle_manager-12] failed to terminate '5' seconds after receiving 'SIGINT', escalating to 'SIGTERM'
+[INFO] [lifecycle_manager-12]: sending signal 'SIGTERM' to process[lifecycle_manager-12]
+[ERROR] [lifecycle_manager-12]: process[lifecycle_manager-12] failed to terminate '10.0' seconds after receiving 'SIGTERM', escalating to 'SIGKILL'
+[INFO] [lifecycle_manager-12]: sending signal 'SIGKILL' to process[lifecycle_manager-12]

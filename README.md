@@ -86,7 +86,7 @@ ros2 launch tour_manager pepper_locomotion_llm.launch.py \
 | `enable_pepper` | `true` | Starts real Pepper HRI nodes. |
 | `enable_intent` | `true` | Starts the intent-only speech and LLM nodes. |
 | `model` | `waffle_pi` | TurtleBot3 model. |
-| `lds_model` | `LDS-02` | Lidar model for real TurtleBot bringup. |
+| `lds_model` | `LDS-01` | Lidar model for real TurtleBot bringup. Use `LDS-02` only if `ld08_driver` is installed. |
 | `usb_port` | `/dev/ttyACM0` | OpenCR USB port for real TurtleBot mode. |
 | `namespace` | empty | Namespace forwarded to real TurtleBot bringup. |
 | `nav2_params_file` | TurtleBot3 `waffle_pi.yaml` | Nav2 parameters file. |
@@ -98,3 +98,58 @@ ros2 launch tour_manager pepper_locomotion_llm.launch.py \
 - Nav2 and the tour manager launch in both modes.
 - The workspace must be sourced after building before `ros2 launch` can find
   `tour_manager`.
+
+## QR Code Follower
+
+The `qr_code_follower` package can approach a QR code in two modes:
+
+- `follow_mode:=pose` tracks QR-code poses and uses Nav2 `NavigateThroughPoses`.
+- `follow_mode:=direct` publishes `/cmd_vel` using QR image centering and the
+  apparent QR size.
+
+```bash
+ros2 launch qr_code_follower qr_follower.launch.py
+```
+
+Useful launch options:
+
+```bash
+ros2 launch qr_code_follower qr_follower.launch.py \
+  image_topic:=/camera/image_raw \
+  camera_info_topic:=/camera/camera_info \
+  follow_command_topic:=follow_command \
+  follow_mode:=pose \
+  enabled:=false
+```
+
+Direct image-centering mode:
+
+```bash
+ros2 launch qr_code_follower qr_follower.launch.py follow_mode:=direct
+```
+
+Start or stop it at runtime with `follow_command`:
+
+```bash
+ros2 topic pub --once follow_command std_msgs/msg/String "{data: 'start'}"
+ros2 topic pub --once follow_command std_msgs/msg/String "{data: 'stop'}"
+```
+
+You can also enable or disable it with the service:
+
+```bash
+ros2 service call /qr_follower/set_enabled std_srvs/srv/SetBool "{data: true}"
+ros2 service call /qr_follower/set_enabled std_srvs/srv/SetBool "{data: false}"
+```
+
+Watch detection and control status:
+
+```bash
+ros2 topic echo /qr_follower/status
+```
+
+Tune behavior in `src/qr_code_follower/config/qr_follower.yaml`. The most useful
+parameters are `follow_mode`, `qr_size_m`, `min_follow_distance_m`,
+`pose_queue_size`, `pose_save_period`, `goal_offset_m`, and `stop_range_m`.
+`qr_size_m` must match the printed QR code's physical side length. In direct
+mode, `min_follow_distance_m` is enforced from the apparent QR size in the image.

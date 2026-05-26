@@ -48,6 +48,7 @@ def generate_launch_description():
     ])
     pepper_real_launch = PathJoinSubstitution([
         FindPackageShare('pepper_hri'),
+        'launch',
         'pepper_real.launch.py',
     ])
     intent_only_launch = PathJoinSubstitution([
@@ -69,7 +70,7 @@ def generate_launch_description():
             description='TurtleBot3 model to run.'),
         DeclareLaunchArgument(
             'lds_model',
-            default_value='LDS-02',
+            default_value='LDS-01',
             description='LDS model used by the real TurtleBot3 bringup.'),
         DeclareLaunchArgument(
             'turtlebot_mode',

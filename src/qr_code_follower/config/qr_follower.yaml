@@ -1,0 +1,49 @@
+qr_follower:
+  ros__parameters:
+    use_sim_time: false
+    image_topic: /camera/image_raw
+    # Real TurtleBot camera_ros commonly publishes /image.
+    alternate_image_topic: /image
+    camera_info_topic: /camera/camera_info
+    # Use the TurtleBot camera TF frame when the camera driver reports frame_id "camera".
+    # Set to '' to use the image header frame_id directly.
+    camera_frame_override: camera_rgb_optical_frame
+    # Use camera_link only if camera_rgb_optical_frame is not present in TF.
+    # camera_frame_override: camera_link
+    follow_command_topic: follow_command
+    status_topic: /qr_follower/status
+    enabled: false
+    # pose: estimate QR pose and send NavigateThroughPoses goals.
+    # direct: publish cmd_vel using QR image centering and apparent QR size.
+    follow_mode: direct
+    cmd_vel_topic: /cmd_vel
+    # Leave empty when OpenCV is built without QUIRC QR decoding support.
+    target_text: ''
+    global_frame: map
+    base_frame: base_link
+    qr_size_m: 0.10
+    pose_queue_size: 4
+    pose_save_period: 0.5
+    min_pose_separation: 0.05
+    goal_offset_m: 0.45
+    stop_range_m: 0.4
+    min_follow_distance_m: 0.2
+    direct_linear_gain: 0.45
+    direct_angular_gain: 1.4
+    direct_center_deadband_rad: 0.04
+    direct_max_linear_speed: 0.14
+    direct_max_angular_speed: 0.7
+    direct_fallback_horizontal_fov_deg: 62.0
+    direct_stop_confirm_frames: 3
+    send_min_poses: 2
+    action_name: navigate_through_poses
+    no_target_log_period: 1.0
+    no_image_log_period: 5.0
+    qr_lost_grace_period: 1.0
+    detection_scale: 1.5
+    detection_scales: [1.0, 1.5, 2.0]
+    aggressive_preprocessing: true
+    detector_eps_x: 0.5
+    detector_eps_y: 0.5
+    publish_debug_image: true
+    debug_image_topic: /qr_follower/debug_image
