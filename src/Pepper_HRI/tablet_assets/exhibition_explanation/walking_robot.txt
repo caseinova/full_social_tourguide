@@ -1,4 +1,4 @@
-This here is a younger cousin of mine!
+1 | Walking Robot | This here is a younger cousin of mine!
 
 Walking Robot is an example of a very primitive version of a "Social Robot, it represents a long lineage of automaton which mimics/performs human functions. You might see that Walking Robot can advance linearly with a walking motion, but also those legs are attached to arms and create a swinging motion. Unlike the practical counterbalancing effect in humans, this feature of Walking Robot is purely cosmetic. 
 

@@ -1,4 +1,4 @@
-Now we arrive at a display of chaotic kinematics. This is a double pendulum, otherwise known as a "chaotic pendulum". 
+4|Glowing Double Pendulum|Now we arrive at a display of chaotic kinematics. This is a double pendulum, otherwise known as a "chaotic pendulum". 
 
 This is a demonstration of the incredible number of outputs which even as little as 2 joints can create. The double pendulum experiment is one of an array of examples which depict a great change in output from a relatively negligible change in starting variables. Other examples you might be familiar with include turbulence, the butterfly effect, and the 3 body problem.
 

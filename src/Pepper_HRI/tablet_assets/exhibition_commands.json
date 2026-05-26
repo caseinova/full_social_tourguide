@@ -1,29 +1,29 @@
 {
-    "walking_robot_exhibit": {
+    "walking_robot": {
     "text_file": "exhibition_explanation/walking_robot_exhibit_explanation.txt",
     "image_folder": "exhibition_images/walking_robot"
   },
-    "combination_vault_exhibit": {
+    "combination_vault": {
     "text_file": "exhibition_explanation/combination_vault_exhibit_explanation.txt",
     "image_folder": "exhibition_images/combination_vault"
   },
-  "LED_crystal_exhibit": {
+   "LED_crystal": {
     "text_file": "exhibition_explanation/LED_crystal_exhibit_explanation.txt",
     "image_folder": "exhibition_images/LED_crystal"
   },
-  "glowing_double_pendulum_exhibit": {
+   "glowing_double_pendulum": {
     "text_file": "exhibition_explanation/glowing_double_pendulum_exhibit_explanation.txt",
     "image_folder": "exhibition_images/double_pendulum"
   },
-  "crane_exhibit": {
+   "crane": {
     "text_file": "exhibition_explanation/crane_exhibit_explanation.txt",
     "image_folder": "exhibition_images/crane"
   },
-  "articulated_lamp_exhibit": {
+   "articulated_lamp": {
     "text_file": "exhibition_explanation/articulated_lamp_exhibit_explanation.txt",
     "image_folder": "exhibition_images/articulated_lamp"
   },
-  "conclusion": {
+   "conclusion": {
     "text_file": "exhibition_explanation/conclusion.txt",
     "image_folder": "exhibition_images/conclusion_compilation"
   }

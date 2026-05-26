@@ -1,4 +1,4 @@
-Well, you can't display a password prompt without a screen, can you? With the direction we have taken our technology, this is only possible with the Light Emitting Diode. 
+3|LED Crystal|Well, you can't display a password prompt without a screen, can you? With the direction we have taken our technology, this is only possible with the Light Emitting Diode. 
 
 What you see before you is an example of all the ways we create colour on our screens with only 3 elements. This magnificent range can be represented with a Venn Diagram.
 
