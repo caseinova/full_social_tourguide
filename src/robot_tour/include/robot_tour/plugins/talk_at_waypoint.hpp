@@ -22,6 +22,7 @@
 #include "nav2_core/waypoint_task_executor.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
+#include "std_msgs/msg/int64_multi_array.hpp"
 #include "std_msgs/msg/string.hpp"
 
 namespace robot_tour
@@ -50,13 +51,17 @@ public:
 protected:
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr publisher_;
   rclcpp::Subscription<std_msgs::msg::String>::SharedPtr done_talking_subscription_;
+  rclcpp::Subscription<std_msgs::msg::Int64MultiArray>::SharedPtr waypoint_order_subscription_;
   void done_talking_callback_(const std_msgs::msg::String::ConstSharedPtr & msg);
+  void waypoint_order_callback_(const std_msgs::msg::Int64MultiArray::ConstSharedPtr & msg);
   int waypoint_pause_duration_{200};
   int max_wait_duration_{30000};
   bool is_enabled_{true};
   std::string talk_topic_{"/talk_command"};
+  std::string waypoint_order_topic_{"/tour_waypoint_order"};
   std::string default_message_{"Arrived at waypoint "};
   std::vector<std::string> waypoint_messages_;
+  std::vector<int64_t> waypoint_order_;
   rclcpp::Logger logger_{rclcpp::get_logger("robot_tour")};
   rclcpp::Clock::SharedPtr clock_;
   bool done_talking_flag_{false};

@@ -9,6 +9,7 @@
 #include "rclcpp_action/rclcpp_action.hpp"
 #include "rclcpp_components/register_node_macro.hpp"
 #include "geometry_msgs/msg/pose_stamped.hpp"
+#include "std_msgs/msg/int64_multi_array.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "social_robot_interfaces/srv/tours.hpp"
 
@@ -26,6 +27,8 @@ public:
     dock_after_tour_ = this->declare_parameter<bool>("dock_after_tour", false);
     const auto dock_command_topic = this->declare_parameter<std::string>(
       "dock_command_topic", "/dock_command");
+    const auto waypoint_order_topic = this->declare_parameter<std::string>(
+      "waypoint_order_topic", "/tour_waypoint_order");
 
     sub_node_tour = rclcpp::Node::make_shared("subservient_tour_node");
     this->client_ptr_ = rclcpp_action::create_client<Waypoints>(
@@ -34,12 +37,17 @@ public:
     subscription_ = this->create_subscription<std_msgs::msg::String>(
       "tour_command", 10, std::bind(&WaypointFollowerClient::topic_callback, this, std::placeholders::_1));
     dock_command_publisher_ = this->create_publisher<std_msgs::msg::String>(dock_command_topic, 10);
+    auto waypoint_order_qos = rclcpp::QoS(rclcpp::KeepLast(1)).reliable().transient_local();
+    waypoint_order_publisher_ = this->create_publisher<std_msgs::msg::Int64MultiArray>(
+      waypoint_order_topic,
+      waypoint_order_qos);
     this->tour_service_client_ = sub_node_tour->create_client<social_robot_interfaces::srv::Tours>("tour_retrieve");
     RCLCPP_INFO(
       this->get_logger(),
-      "Tour guide dock_after_tour=%s, dock_command_topic='%s'",
+      "Tour guide dock_after_tour=%s, dock_command_topic='%s', waypoint_order_topic='%s'",
       dock_after_tour_ ? "true" : "false",
-      dock_command_topic.c_str());
+      dock_command_topic.c_str(),
+      waypoint_order_topic.c_str());
     
   
   }
@@ -76,6 +84,7 @@ private:
   std::shared_ptr<rclcpp::Node> sub_node_tour;
   rclcpp::Client<social_robot_interfaces::srv::Tours>::SharedPtr tour_service_client_;
   rclcpp::Publisher<std_msgs::msg::String>::SharedPtr dock_command_publisher_;
+  rclcpp::Publisher<std_msgs::msg::Int64MultiArray>::SharedPtr waypoint_order_publisher_;
   bool dock_after_tour_ = false;
 
   void goal_response_callback(std::shared_ptr<GoalHandleWaypoints> future)
@@ -134,6 +143,18 @@ private:
     RCLCPP_INFO(this->get_logger(), "Published dock command after tour completion");
   }
 
+  void publish_waypoint_order(std::size_t waypoint_count)
+  {
+    auto msg = std_msgs::msg::Int64MultiArray();
+    msg.data.reserve(waypoint_count);
+    for (std::size_t i = 0; i < waypoint_count; ++i) {
+      msg.data.push_back(static_cast<int64_t>(i));
+    }
+
+    waypoint_order_publisher_->publish(msg);
+    RCLCPP_INFO(this->get_logger(), "Published waypoint order map with %zu entries", msg.data.size());
+  }
+
   void topic_callback(const std_msgs::msg::String::SharedPtr msg)
   {
     RCLCPP_INFO(this->get_logger(), "received %s", msg->data.c_str());
@@ -158,7 +179,9 @@ private:
       RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Failed");
     }
     
-    this->send_goal(result.get()->tour);
+    const auto tour = result.get()->tour;
+    publish_waypoint_order(tour.size());
+    this->send_goal(tour);
     RCLCPP_INFO(this->get_logger(), "goal sent");
   }
 };  // class FibonacciActionClient

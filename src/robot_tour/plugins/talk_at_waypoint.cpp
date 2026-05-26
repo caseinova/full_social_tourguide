@@ -46,6 +46,8 @@ void TalkAtWaypoint::initialize(
   nav2_util::declare_parameter_if_not_declared(
     node, plugin_name + ".talk_topic", rclcpp::ParameterValue(talk_topic_));
   nav2_util::declare_parameter_if_not_declared(
+    node, plugin_name + ".waypoint_order_topic", rclcpp::ParameterValue(waypoint_order_topic_));
+  nav2_util::declare_parameter_if_not_declared(
     node, plugin_name + ".default_message", rclcpp::ParameterValue(default_message_));
   nav2_util::declare_parameter_if_not_declared(
     node, plugin_name + ".waypoint_messages", rclcpp::ParameterValue(std::vector<std::string>{}));
@@ -55,6 +57,7 @@ void TalkAtWaypoint::initialize(
   node->get_parameter(plugin_name + ".enabled", is_enabled_);
   node->get_parameter(plugin_name + ".waypoint_pause_duration", waypoint_pause_duration_);
   node->get_parameter(plugin_name + ".talk_topic", talk_topic_);
+  node->get_parameter(plugin_name + ".waypoint_order_topic", waypoint_order_topic_);
   node->get_parameter(plugin_name + ".default_message", default_message_);
   node->get_parameter(plugin_name + ".waypoint_messages", waypoint_messages_);
   node->get_parameter(plugin_name + ".max_wait_duration", max_wait_duration_);
@@ -67,12 +70,18 @@ void TalkAtWaypoint::initialize(
 
   publisher_ = node->create_publisher<std_msgs::msg::String>(talk_topic_, rclcpp::SystemDefaultsQoS());
   done_talking_subscription_ = node->create_subscription<std_msgs::msg::String>("/done_talking", rclcpp::SystemDefaultsQoS(),std::bind(&TalkAtWaypoint::done_talking_callback_, this, std::placeholders::_1));
+  auto waypoint_order_qos = rclcpp::QoS(rclcpp::KeepLast(1)).reliable().transient_local();
+  waypoint_order_subscription_ = node->create_subscription<std_msgs::msg::Int64MultiArray>(
+    waypoint_order_topic_,
+    waypoint_order_qos,
+    std::bind(&TalkAtWaypoint::waypoint_order_callback_, this, std::placeholders::_1));
 
   RCLCPP_INFO(
     logger_,
-    "TalkAtWaypoint initialized: enabled=%s, talk_topic=%s, pause=%d ms",
+    "TalkAtWaypoint initialized: enabled=%s, talk_topic=%s, waypoint_order_topic=%s, pause=%d ms",
     is_enabled_ ? "true" : "false",
     talk_topic_.c_str(),
+    waypoint_order_topic_.c_str(),
     waypoint_pause_duration_);
 }
 
@@ -80,6 +89,13 @@ void TalkAtWaypoint::done_talking_callback_(const std_msgs::msg::String::ConstSh
 {
   RCLCPP_INFO(logger_, "Received done talking signal: '%s'", msg->data.c_str());
   done_talking_flag_ = true;
+}
+
+void TalkAtWaypoint::waypoint_order_callback_(
+  const std_msgs::msg::Int64MultiArray::ConstSharedPtr & msg)
+{
+  waypoint_order_ = msg->data;
+  RCLCPP_INFO(logger_, "Received waypoint order map with %zu entries", waypoint_order_.size());
 }
 
 bool TalkAtWaypoint::processAtWaypoint(
@@ -90,15 +106,23 @@ bool TalkAtWaypoint::processAtWaypoint(
     return true;
   }
 
-  std_msgs::msg::String msg;
+  auto talk_waypoint_index = curr_waypoint_index;
   if (
     curr_waypoint_index >= 0 &&
-    static_cast<size_t>(curr_waypoint_index) < waypoint_messages_.size() &&
-    !waypoint_messages_[curr_waypoint_index].empty())
+    static_cast<size_t>(curr_waypoint_index) < waypoint_order_.size())
   {
-    msg.data = waypoint_messages_[curr_waypoint_index];
+    talk_waypoint_index = static_cast<int>(waypoint_order_[curr_waypoint_index]);
+  }
+
+  std_msgs::msg::String msg;
+  if (
+    talk_waypoint_index >= 0 &&
+    static_cast<size_t>(talk_waypoint_index) < waypoint_messages_.size() &&
+    !waypoint_messages_[talk_waypoint_index].empty())
+  {
+    msg.data = waypoint_messages_[talk_waypoint_index];
   } else {
-    msg.data = default_message_ + std::to_string(curr_waypoint_index);
+    msg.data = default_message_ + std::to_string(talk_waypoint_index);
   }
 
   publisher_->publish(msg);
@@ -108,8 +132,9 @@ bool TalkAtWaypoint::processAtWaypoint(
 
   RCLCPP_INFO(
     logger_,
-    "Arrived at waypoint %d, published talk command: '%s'",
+    "Arrived at goal waypoint %d (tour waypoint %d), published talk command: '%s'",
     curr_waypoint_index,
+    talk_waypoint_index,
     msg.data.c_str());
   
   while (wait_count_<=max_wait_duration_/waypoint_pause_duration_)
@@ -127,8 +152,8 @@ bool TalkAtWaypoint::processAtWaypoint(
   }
   RCLCPP_INFO(
       logger_,
-      "Received done talking signal for waypoint %d, resuming navigation",
-      curr_waypoint_index);
+      "Received done talking signal for tour waypoint %d, resuming navigation",
+      talk_waypoint_index);
 
   return true;
 }

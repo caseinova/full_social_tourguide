@@ -20,12 +20,18 @@ SubtourNode::SubtourNode(const rclcpp::NodeOptions & options)
   const auto action_name = this->declare_parameter<std::string>("action_name", "/follow_waypoints");
   const auto current_pose_topic = this->declare_parameter<std::string>("current_pose_topic", "/amcl_pose");
   const auto dock_command_topic = this->declare_parameter<std::string>("dock_command_topic", "/dock_command");
+  const auto waypoint_order_topic = this->declare_parameter<std::string>(
+    "waypoint_order_topic", "/tour_waypoint_order");
   dock_after_tour_ = this->declare_parameter<bool>("dock_after_tour", false);
   max_2opt_iterations_ = this->declare_parameter<int>("max_2opt_iterations", 1000);
 
   waypoint_client_ = rclcpp_action::create_client<Waypoints>(this, action_name);
   tour_service_client_ = this->create_client<social_robot_interfaces::srv::Tours>("tour_retrieve");
   dock_command_publisher_ = this->create_publisher<std_msgs::msg::String>(dock_command_topic, 10);
+  auto waypoint_order_qos = rclcpp::QoS(rclcpp::KeepLast(1)).reliable().transient_local();
+  waypoint_order_publisher_ = this->create_publisher<std_msgs::msg::Int64MultiArray>(
+    waypoint_order_topic,
+    waypoint_order_qos);
   current_pose_subscription_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
     current_pose_topic,
     rclcpp::SystemDefaultsQoS(),
@@ -37,11 +43,12 @@ SubtourNode::SubtourNode(const rclcpp::NodeOptions & options)
 
   RCLCPP_INFO(
     this->get_logger(),
-    "Listening for TSP waypoint lists on '%s' and sending tours to '%s'; dock_after_tour=%s, dock_command_topic='%s'",
+    "Listening for TSP waypoint lists on '%s' and sending tours to '%s'; dock_after_tour=%s, dock_command_topic='%s', waypoint_order_topic='%s'",
     command_topic.c_str(),
     action_name.c_str(),
     dock_after_tour_ ? "true" : "false",
-    dock_command_topic.c_str());
+    dock_command_topic.c_str(),
+    waypoint_order_topic.c_str());
 }
 
 float SubtourNode::computeCost(
@@ -249,7 +256,9 @@ void SubtourNode::tourResponseCallback(
   const auto response = future.get();
 
   std::vector<geometry_msgs::msg::PoseStamped> selected_poses;
+  std::vector<int64_t> selected_original_indices;
   selected_poses.reserve(waypoint_indices.size());
+  selected_original_indices.reserve(waypoint_indices.size());
 
   for (const auto waypoint_idx : waypoint_indices) {
     if (waypoint_idx < 0 || static_cast<std::size_t>(waypoint_idx) >= response->tour.size()) {
@@ -262,6 +271,7 @@ void SubtourNode::tourResponseCallback(
     }
 
     selected_poses.push_back(response->tour[static_cast<std::size_t>(waypoint_idx)]);
+    selected_original_indices.push_back(waypoint_idx);
   }
 
   if (selected_poses.empty()) {
@@ -270,6 +280,11 @@ void SubtourNode::tourResponseCallback(
   }
 
   auto ordered_poses = solveTour(selected_poses, max_2opt_iterations_);
+  std::vector<int64_t> ordered_original_indices;
+  ordered_original_indices.reserve(current_tour.size());
+  for (const auto selected_pose_idx : current_tour) {
+    ordered_original_indices.push_back(selected_original_indices.at(selected_pose_idx));
+  }
 
   RCLCPP_INFO(
     this->get_logger(),
@@ -277,6 +292,7 @@ void SubtourNode::tourResponseCallback(
     ordered_poses.size(),
     computeTourCost());
 
+  publishWaypointOrder(ordered_original_indices);
   sendGoal(ordered_poses);
 }
 
@@ -302,6 +318,14 @@ void SubtourNode::sendGoal(const std::vector<geometry_msgs::msg::PoseStamped> & 
 
   waypoint_client_->async_send_goal(goal_msg, send_goal_options);
   RCLCPP_INFO(this->get_logger(), "Sent %zu optimized waypoints", poses.size());
+}
+
+void SubtourNode::publishWaypointOrder(const std::vector<int64_t> & waypoint_order)
+{
+  auto msg = std_msgs::msg::Int64MultiArray();
+  msg.data = waypoint_order;
+  waypoint_order_publisher_->publish(msg);
+  RCLCPP_INFO(this->get_logger(), "Published waypoint order map with %zu entries", msg.data.size());
 }
 
 void SubtourNode::goalResponseCallback(const GoalHandleWaypoints::SharedPtr & goal_handle)

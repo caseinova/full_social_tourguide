@@ -8,6 +8,7 @@ tour_guide:
   ros__parameters:
     dock_after_tour: true
     dock_command_topic: /dock_command
+    waypoint_order_topic: /tour_waypoint_order
 
 subtour:
   ros__parameters:
@@ -16,6 +17,7 @@ subtour:
     current_pose_topic: /amcl_pose
     dock_after_tour: true
     dock_command_topic: /dock_command
+    waypoint_order_topic: /tour_waypoint_order
     max_2opt_iterations: 10000
 
 docking_server:
