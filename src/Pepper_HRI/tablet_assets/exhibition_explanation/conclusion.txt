@@ -1,0 +1,17 @@
+To conclude the Pepper tour, I am a combination of many of the aspects of these exhibitions.
+
+As a Social Robot, I am made with empathetic features to mimic human behaviour so that I may be more sociable, similar to the Walking Robot.
+
+Of course I am programmed, but not everyone should be allowed to have control over me, for that purpose the same cryptography behind the cryptex is utilised.
+
+It helps greatly to have a screen which you humans may read text or see images from, of which it is important to have colour. Those colours are created through R.G.B light emitting diodes, the function of which you can see in the L.E.D crystal exhibit.
+
+Social robots benefit alot from having body gestures. Having as little as 2 kinematic joints allow for an incredible number of movements and motions, you can see this in the Double Pendulum.
+
+Of course we want to be able to control those joints individually to manipulate the effectively affect the end affector. To show this, we can look to the ever reliable crane.
+
+The penultimate showcase of simple kinematic manipulation must be the articulated desk lamp. Humans control individual joints positions and keep limbs in desirable locations to highlight subjects and allow for a greater understanding of any particular focus point.
+
+Thank you for listening to my tour.
+
+

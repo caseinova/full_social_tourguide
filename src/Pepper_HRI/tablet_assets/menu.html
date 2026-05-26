@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1a1a1a;
+            color: white;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+            padding: 40px;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* The 4-column grid that forms the "n" shape */
+        .n-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        /* Base button styling holding image + text */
+        .tour-btn {
+            background: #2a2a2a;
+            border: 3px solid #444;
+            border-radius: 16px;
+            min-height: 180px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .tour-btn span {
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        .tour-btn small {
+            color: #b5b5b5;
+            font-size: 16px;
+            line-height: 1.35;
+            max-height: 66px;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        /* Selected State */
+        .tour-btn.selected {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Positioning the lower legs of the "n" */
+        .pos-5 { grid-column: 1; } /* Row 2, Left leg */
+        .pos-6 { grid-column: 4; } /* Row 2, Right leg */
+
+        /* The massive Confirm Button container */
+        .footer-panel {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .confirm-btn {
+            width: 50%;
+            background: #00b0ff;
+            color: white;
+            border: none;
+            padding: 20px 0;
+            font-size: 32px;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .confirm-btn:active {
+            transform: scale(0.98);
+            background: #0088cc;
+        }
+
+        .confirm-btn:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .menu-status {
+            color: #cfcfcf;
+            font-size: 28px;
+            grid-column: 1 / -1;
+            min-height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <div class="n-grid" id="tourGrid">
+            <div class="menu-status">Loading tour waypoints...</div>
+        </div>
+
+        <div class="footer-panel">
+            <button class="confirm-btn" id="confirmBtn" disabled onclick="sendToRobot()">Confirm Tour</button>
+        </div>
+    </div>
+
+    <script>
+        var selectedArtifacts = [];
+        var currentCommand = null;
+
+        window.onerror = function(message, source, lineno, colno, error) {
+            logTablet('Menu JavaScript error', {
+                message: String(message),
+                source: source || '',
+                line: lineno || 0,
+                column: colno || 0,
+                error: error && error.stack ? error.stack : ''
+            }, 'error');
+            return false;
+        };
+
+        function xhrJson(method, url, payload, callback) {
+            var xhr = new XMLHttpRequest();
+            var targetUrl = url;
+            if (method === 'GET') {
+                targetUrl += (url.indexOf('?') === -1 ? '?' : '&') + '_=' + Date.now();
+            }
+
+            xhr.open(method, targetUrl, true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState !== 4) return;
+
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    var data = {};
+                    try {
+                        data = xhr.responseText ? JSON.parse(xhr.responseText) : {};
+                    } catch (error) {
+                        callback(error, null, xhr);
+                        return;
+                    }
+                    callback(null, data, xhr);
+                } else {
+                    callback(new Error('HTTP ' + xhr.status + ': ' + xhr.responseText), null, xhr);
+                }
+            };
+            xhr.onerror = function() {
+                callback(new Error('Network error calling ' + url), null, xhr);
+            };
+
+            if (method === 'POST') {
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify(payload || {}));
+            } else {
+                xhr.send();
+            }
+        }
+
+        function logTablet(message, payload, level) {
+            var logLevel = level || 'info';
+            if (window.console && console.log) {
+                console.log(message, payload || '');
+            }
+            xhrJson('POST', '/tablet_log', {
+                level: logLevel,
+                message: message,
+                payload: payload || null
+            }, function() {});
+        }
+
+        function setConfirmButtonState() {
+            var confirmBtn = document.getElementById('confirmBtn');
+            if (selectedArtifacts.length > 0) {
+                confirmBtn.removeAttribute('disabled');
+            } else {
+                confirmBtn.setAttribute('disabled', 'true');
+            }
+        }
+
+        function renderWaypoints(waypoints) {
+            var grid = document.getElementById('tourGrid');
+            grid.innerHTML = '';
+            selectedArtifacts = [];
+            setConfirmButtonState();
+
+            logTablet('Rendering waypoints', {
+                count: waypoints.length,
+                waypoints: waypoints
+            });
+
+            if (waypoints.length === 0) {
+                var emptyState = document.createElement('div');
+                emptyState.className = 'menu-status';
+                emptyState.innerHTML = 'No tour waypoints available';
+                grid.appendChild(emptyState);
+                return;
+            }
+
+            for (var i = 0; i < waypoints.length; i += 1) {
+                appendWaypointButton(grid, waypoints[i], i);
+            }
+
+            logTablet('Waypoint render complete', {
+                buttonCount: document.querySelectorAll('.tour-btn').length
+            });
+        }
+
+        function appendWaypointButton(grid, waypoint, index) {
+            var button = document.createElement('button');
+            button.className = 'tour-btn';
+            if (index === 4) button.className += ' pos-5';
+            if (index === 5) button.className += ' pos-6';
+            button.setAttribute('data-waypoint-idx', waypoint.idx);
+            button.onclick = function() {
+                selectTour(waypoint.idx, button);
+            };
+
+            var name = document.createElement('span');
+            name.appendChild(document.createTextNode(waypoint.name || ('Waypoint ' + (index + 1))));
+            button.appendChild(name);
+
+            if (waypoint.description) {
+                var description = document.createElement('small');
+                description.appendChild(document.createTextNode(waypoint.description));
+                button.appendChild(description);
+            }
+
+            grid.appendChild(button);
+        }
+
+        function loadWaypoints() {
+            logTablet('Requesting tour waypoints', { url: '/tour_waypoints' });
+            xhrJson('GET', '/tour_waypoints', null, function(error, data, xhr) {
+                if (error) {
+                    var grid = document.getElementById('tourGrid');
+                    grid.innerHTML = '';
+                    var errorState = document.createElement('div');
+                    errorState.className = 'menu-status';
+                    errorState.innerHTML = 'Could not load tour waypoints';
+                    grid.appendChild(errorState);
+                    logTablet('Failed to load tour waypoints', {
+                        message: error.message,
+                        status: xhr ? xhr.status : 0
+                    }, 'error');
+                    return;
+                }
+
+                var waypoints = data && data.waypoints ? data.waypoints : [];
+                logTablet('Received tour waypoints', {
+                    count: waypoints.length,
+                    raw: data
+                });
+                renderWaypoints(waypoints);
+            });
+        }
+
+        function selectTour(artifactId, clickedBtn) {
+            var index = selectedArtifacts.indexOf(artifactId);
+            logTablet('Waypoint button pressed', {
+                artifactId: artifactId,
+                wasSelected: index > -1
+            });
+
+            if (index > -1) {
+                selectedArtifacts.splice(index, 1);
+                clickedBtn.className = clickedBtn.className.replace(/\s?selected/g, '');
+            } else {
+                selectedArtifacts.push(artifactId);
+                if (clickedBtn.className.indexOf('selected') === -1) {
+                    clickedBtn.className += ' selected';
+                }
+            }
+
+            setConfirmButtonState();
+        }
+
+        function sendToRobot() {
+            if (selectedArtifacts.length === 0) return;
+
+            var payload = {
+                type: 'tour_submit',
+                waypoints: selectedArtifacts,
+                eventId: nextTabletEventId()
+            };
+            logTablet('Confirm Tour pressed', payload);
+            raiseTabletEvent(payload);
+            postTabletEventFallback(payload);
+        }
+
+        function nextTabletEventId() {
+            return Date.now().toString() + '-' + Math.random().toString(16).slice(2);
+        }
+
+        function postTabletEventFallback(payload) {
+            xhrJson('POST', '/tablet_event', payload, function(error) {
+                if (error) {
+                    logTablet('HTTP tablet event fallback failed', {
+                        message: error.message,
+                        payload: payload
+                    }, 'error');
+                } else {
+                    logTablet('HTTP tablet event fallback posted', payload);
+                }
+            });
+        }
+
+        function raiseTabletEvent(payload) {
+            var hasBinding = !!window.ALTabletBinding;
+            var hasRaiseEvent = !!(window.ALTabletBinding && window.ALTabletBinding.raiseEvent);
+            logTablet('Attempting ALTabletBinding.raiseEvent', {
+                payload: payload,
+                hasBinding: hasBinding,
+                hasRaiseEvent: hasRaiseEvent,
+                url: window.location.href
+            });
+
+            if (hasRaiseEvent) {
+                try {
+                    window.ALTabletBinding.raiseEvent(JSON.stringify(payload));
+                    logTablet('ALTabletBinding.raiseEvent returned', payload);
+                    return true;
+                } catch (error) {
+                    logTablet('ALTabletBinding.raiseEvent threw', {
+                        message: error.message,
+                        payload: payload
+                    }, 'error');
+                }
+            }
+
+            logTablet('ALTabletBinding.raiseEvent unavailable', {
+                hasBinding: hasBinding,
+                hasRaiseEvent: hasRaiseEvent,
+                payload: payload
+            }, 'warn');
+            return false;
+        }
+
+        function requestTabletNavigation(page, buttonLabel) {
+            var payload = {
+                type: 'navigate',
+                page: page,
+                button: buttonLabel,
+                eventId: nextTabletEventId()
+            };
+            logTablet('Navigation button pressed', payload);
+            raiseTabletEvent(payload);
+            postTabletEventFallback(payload);
+        }
+
+        function watchForExternalCommands() {
+            xhrJson('GET', 'current_state.json', null, function(error, data) {
+                if (error || !data) return;
+
+                if (currentCommand === null) {
+                    currentCommand = data.command;
+                } else if (data.command !== currentCommand) {
+                    logTablet('External command detected', data);
+                    requestTabletNavigation('index.html', 'External Command');
+                }
+            });
+        }
+
+        function startMenu() {
+            logTablet('Tablet menu script starting', {
+                url: window.location.href,
+                readyState: document.readyState,
+                hasBinding: !!window.ALTabletBinding,
+                hasRaiseEvent: !!(window.ALTabletBinding && window.ALTabletBinding.raiseEvent),
+                buttonCount: document.querySelectorAll('button').length
+            });
+            loadWaypoints();
+            setInterval(watchForExternalCommands, 300);
+        }
+
+        if (document.readyState === 'loading') {
+            window.onload = startMenu;
+        } else {
+            startMenu();
+        }
+    </script>
+</body>
+</html>

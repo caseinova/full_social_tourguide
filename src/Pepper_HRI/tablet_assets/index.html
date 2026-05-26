@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #1a1a1a;
+            color: white;
+            margin: 0;
+            overflow: hidden; 
+        }
+
+        .main-wrapper {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            padding: 20px;
+            box-sizing: border-box;
+            gap: 30px;
+            align-items: flex-start; 
+        }
+
+        /* Left Side Structure: Stack gallery on top of buttons */
+        .left-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 40px); 
+            gap: 20px;
+        }
+
+        /* Left Column Sub-component: Images */
+        #image-gallery {
+            flex: 1; 
+            overflow: hidden;
+            position: relative;
+            -webkit-mask-image: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 10%, 
+                black 90%, 
+                transparent 100%);
+            mask-image: linear-gradient(to bottom, 
+                transparent 0%, 
+                black 10%, 
+                black 90%, 
+                transparent 100%);
+        }
+
+        .scroll-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* ONLY animates if builder.py provides this class */
+        .animate-scroll {
+            animation: scrollDown 20s linear infinite;
+        }
+
+        /* Centers images if they aren't scrolling */
+        .static-gallery {
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        @keyframes scrollDown {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0%); }
+        }
+
+        #image-gallery img {
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid #444;
+            flex-shrink: 0; 
+            display: block;
+        }
+
+        /* Controls Container for side-by-side buttons */
+        .control-panel {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        /* Base tablet-friendly button styling */
+        .zoom-btn, .nav-btn {
+            background: #2a2a2a;
+            color: white;
+            border: 2px solid #444;
+            padding: 15px 0;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent; 
+        }
+
+        /* Text Resizing buttons grow to fill space normally */
+        .zoom-btn {
+            flex: 2; /* Relative size weighting */
+        }
+
+        /* The Menu/Navigation button is exactly half the width */
+        .nav-btn {
+            flex: 1; /* Relative size weighting */
+            background: #332244; /* Subtle purple tint so it stands out as a unique action */
+            border-color: #553377;
+        }
+
+        .zoom-btn:active {
+            background: #00d4ff;
+            color: #1a1a1a;
+            border-color: #00d4ff;
+            transform: scale(0.98); 
+        }
+
+        .nav-btn:active {
+            background: #a855f7;
+            color: #1a1a1a;
+            border-color: #a855f7;
+            transform: scale(0.98);
+        }
+
+        /* Right Column: Scrolling Text */
+        .text-column {
+            flex: 2;
+            height: calc(100vh - 40px);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            overflow-y: auto;
+            display: block; 
+            position: relative;
+        }
+
+        h1 {
+            margin: 0;
+            padding-bottom: 5px;
+            font-size: 5rem;
+            color: #00d4ff;
+            line-height: 1.2;
+        }
+
+        .text-box {
+            font-size: 50px;
+            line-height: 1.6;
+            text-align: left;
+            white-space: pre-wrap;
+            margin: 0;
+            padding: 5px;
+        }
+
+        .text-column::-webkit-scrollbar { display: none; }
+        .text-column { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body>
+    <div class="main-wrapper">
+        <div class="left-column">
+            <div id="image-gallery">
+                <div class="scroll-container static-gallery">
+                    <img src="exhibition_images/crane/crane.jpg" style="width:100%; margin-bottom:20px;">
+
+                </div>
+            </div>
+
+            <div class="control-panel">
+                <button class="nav-btn" onclick="requestTabletNavigation('menu.html', 'Tour Select')">Tour Select</button>
+                <button class="zoom-btn" onclick="adjustTextSize(-5)">- Text Size</button>
+                <button class="zoom-btn" onclick="adjustTextSize(5)">+ Text Size</button>
+            </div>
+        </div>
+
+        <div class="text-column">
+            <h1>Crane</h1>
+            <div class="text-box">This particular exhibit is a miniaturised crane, a tool to you humans used exponentially magnify the mechanical advantage to lift heavier weights. Out of all the exhibits shown thus far, this is the greatest example of kinematic usage.
+
+The individual joints of the crane have their own particular effect on the very end of the arm. They can be used to manipulate the joints to achieve a particular objective in terms of moving the end affector.
+
+In terms of my own mechanisms, you can see this most prominently in the movement of my shoulder, elbow, and wrist to move my hands in very particular ways to mimic human kinematics and have me appear more empathetic and sociable.
+</div>
+        </div>
+    </div>
+
+    <script>
+        let currentCommand = null;
+
+        // Auto-refresh logic (checks for ROS command changes)
+        async function checkForUpdates() {
+            try {
+                const response = await fetch('current_state.json', { cache: "no-store" });
+                const data = await response.json();
+                if (currentCommand === null) {
+                    currentCommand = data.command;
+                } else if (data.command !== currentCommand) {
+                    requestTabletNavigation('index.html', 'External Command');
+                }
+            } catch (error) {}
+        }
+        setInterval(checkForUpdates, 300);
+
+        // Auto-cloner for seamless scrolling
+        function setupGallery() {
+            const container = document.querySelector('.scroll-container');
+            if (container.classList.contains('animate-scroll')) {
+                container.innerHTML += container.innerHTML;
+            }
+        }
+
+        // Auto-scroll logic for Text
+        const scrollSpeed = 0.8; 
+        const delayBeforeStart = 3000; 
+
+        function startAutoScroll() {
+            const textColumn = document.querySelector('.text-column');
+            textColumn.scrollTop = 0;
+
+            function scrollStep() {
+                textColumn.scrollTop += scrollSpeed;
+                if (textColumn.scrollTop + textColumn.clientHeight >= textColumn.scrollHeight) {
+                    return; 
+                }
+                requestAnimationFrame(scrollStep);
+            }
+
+            setTimeout(() => {
+                requestAnimationFrame(scrollStep);
+            }, delayBeforeStart);
+        }
+
+        // Text Resizer Functionality
+        function adjustTextSize(change) {
+            const textBox = document.querySelector('.text-box');
+            let currentSize = parseInt(window.getComputedStyle(textBox).fontSize) || 50;
+            let newSize = currentSize + change;
+            
+            // Set boundaries so text doesn't become invisible or too massive
+            if (newSize >= 20 && newSize <= 100) {
+                textBox.style.fontSize = newSize + 'px';
+            }
+        }
+
+        function logTablet(message, payload, level = 'info') {
+            console.log(message, payload || '');
+            fetch('/tablet_log', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ level, message, payload: payload || null })
+            }).catch(() => {});
+        }
+
+        function nextTabletEventId() {
+            return Date.now().toString() + '-' + Math.random().toString(16).slice(2);
+        }
+
+        function postTabletEventFallback(payload) {
+            fetch('/tablet_event', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            }).then(() => {
+                logTablet('HTTP tablet event fallback posted', payload);
+            }).catch((error) => {
+                logTablet('HTTP tablet event fallback failed', {
+                    message: error.message,
+                    payload
+                }, 'error');
+            });
+        }
+
+        function raiseTabletEvent(payload) {
+            const hasBinding = !!window.ALTabletBinding;
+            const hasRaiseEvent = !!(window.ALTabletBinding && window.ALTabletBinding.raiseEvent);
+            logTablet('Attempting ALTabletBinding.raiseEvent', {
+                payload,
+                hasBinding,
+                hasRaiseEvent,
+                url: window.location.href
+            });
+
+            if (hasRaiseEvent) {
+                try {
+                    window.ALTabletBinding.raiseEvent(JSON.stringify(payload));
+                    logTablet('ALTabletBinding.raiseEvent returned', payload);
+                    return true;
+                } catch (error) {
+                    logTablet('ALTabletBinding.raiseEvent threw', {
+                        message: error.message,
+                        payload
+                    }, 'error');
+                }
+            }
+
+            logTablet('ALTabletBinding.raiseEvent unavailable', {
+                hasBinding,
+                hasRaiseEvent,
+                payload
+            }, 'warn');
+            return false;
+        }
+
+        function requestTabletNavigation(page, buttonLabel) {
+            const payload = {
+                type: 'navigate',
+                page: page,
+                button: buttonLabel,
+                eventId: nextTabletEventId()
+            };
+            logTablet('Navigation button pressed', payload);
+            const sentToPepper = raiseTabletEvent(payload);
+            postTabletEventFallback(payload);
+
+            if (!sentToPepper) {
+                logTablet('ALTabletBinding path unavailable; waiting for HTTP fallback', { page }, 'warn');
+            }
+        }
+
+        // Run everything when the page loads
+        window.addEventListener('load', () => {
+            logTablet('Tablet page loaded', {
+                url: window.location.href,
+                hasBinding: !!window.ALTabletBinding,
+                hasRaiseEvent: !!(window.ALTabletBinding && window.ALTabletBinding.raiseEvent),
+                buttonCount: document.querySelectorAll('button').length
+            });
+            setupGallery();   
+            startAutoScroll(); 
+        });
+    </script>
+</body>
+</html>

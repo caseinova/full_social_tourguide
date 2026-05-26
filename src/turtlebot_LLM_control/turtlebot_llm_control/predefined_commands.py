@@ -1,0 +1,18 @@
+PREDEFINED_COMMANDS = [
+    "stop",
+    "stop navigation",
+    "pause",
+    "resume",
+    "go to lab",
+    "go to entrance",
+    "go to kitchen",
+    "start tour",
+    "start recording",
+    "record route",
+    "stop recording",
+    "save route",
+    "save tour",
+    "save the tour",
+    "replay",
+    "run route",
+]

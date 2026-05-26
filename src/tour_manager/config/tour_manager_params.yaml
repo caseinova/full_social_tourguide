@@ -1,0 +1,66 @@
+tour_manager:
+  ros__parameters: {}
+
+tour_saver:
+  ros__parameters: {}
+
+tour_guide:
+  ros__parameters: {}
+
+subtour:
+  ros__parameters:
+    command_topic: /tsp_command
+    action_name: /follow_waypoints
+    current_pose_topic: /amcl_pose
+    max_2opt_iterations: 10000
+
+docking_server:
+  ros__parameters:
+    use_sim_time: true
+    controller_frequency: 20.0
+    initial_perception_timeout: 5.0
+    wait_charge_timeout: 5.0
+    dock_approach_timeout: 30.0
+    rotate_to_dock_timeout: 10.0
+    undock_linear_tolerance: 0.05
+    undock_angular_tolerance: 0.05
+    max_retries: 3
+    base_frame: base_link
+    fixed_frame: odom
+    dock_backwards: false
+    dock_prestaging_tolerance: 0.5
+    odom_topic: /odom
+    rotation_angular_tolerance: 0.05
+    rotate_to_dock: false
+    dock_plugins: ['simple_charging_dock']
+    simple_charging_dock:
+      plugin: 'opennav_docking::SimpleChargingDock'
+      use_battery_status: false
+      use_external_detection_pose: false
+      use_stall_detection: false
+      docking_threshold: 0.05
+      staging_x_offset: -0.7
+      staging_yaw_offset: 0.0
+
+lifecycle_manager_docking:
+  ros__parameters:
+    use_sim_time: true
+    autostart: true
+    bond_timeout: 0.0
+    node_names: ['docking_server']
+
+dock_listener:
+  ros__parameters:
+    database_path: docks.db
+    action_name: /dock_robot
+    dock_type: ''
+    max_staging_time: 1000.0
+    navigate_to_staging_pose: true
+    use_dock_id: false
+    default_dock_id: ''
+    current_pose_topic: /amcl_pose
+    global_frame: map
+    base_frame: base_link
+
+speech_listener:
+  ros__parameters: {}

@@ -1,0 +1,25 @@
+tablet_builder_node:
+  ros__parameters:
+    use_sim_time: false
+    pepper_ip: "192.168.0.150"
+    naoqi_port: 9559
+    use_tablet_service: true
+    tablet_base_url: ""
+    tablet_port: 8000
+    auto_select_tablet_port: true
+    show_local_browser: false
+
+hri_coordinator_node:
+  ros__parameters:
+    use_sim_time: false
+
+pepper_gesture_node:
+  ros__parameters:
+    use_sim_time: false
+    pepper_ip: "192.168.0.150"
+    naoqi_port: 9559
+    enable_stiffness: true
+
+realtime_audio_processor_node:
+  ros__parameters:
+    use_sim_time: false

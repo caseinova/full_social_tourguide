@@ -1,0 +1,9 @@
+Well, you can't display a password prompt without a screen, can you? With the direction we have taken our technology, this is only possible with the Light Emitting Diode. 
+
+What you see before you is an example of all the ways we create colour on our screens with only 3 elements. This magnificent range can be represented with a Venn Diagram.
+
+In your human eyes exists a component called a "retina", and this contains 3 types of a particular sensor called a "Cone Cell". Each of those cone cells sense either red, green, or blue. When an incoming light corresponds to more than one cone cell, then more than one cone cells will send signals and you human brain will interpret a mix of those colours.
+
+And thus, L.E.D screens consisting of R.G.B become extremely versatile in colour display. Without the invention of them, I may not be able to convey to you any informational images!
+
+Here is a fun fact for you! If Mr. Shuji Nakamura hadn't been stubborn enough to invent the elusive blue L.E.D, then all you humans might still be using ht inefficient Cathode Ray Tube displays!

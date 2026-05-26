@@ -1,0 +1,10 @@
+<library path="talk_at_waypoint">
+  <class
+    name="robot_tour::TalkAtWaypoint"
+    type="robot_tour::TalkAtWaypoint"
+    base_class_type="nav2_core::WaypointTaskExecutor">
+    <description>
+      Publishes a talk command when Nav2 reaches a waypoint.
+    </description>
+  </class>
+</library>

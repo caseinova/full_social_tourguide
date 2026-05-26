@@ -1,0 +1,7 @@
+This here is a younger cousin of mine!
+
+Walking Robot is an example of a very primitive version of a "Social Robot, it represents a long lineage of automaton which mimics/performs human functions. You might see that Walking Robot can advance linearly with a walking motion, but also those legs are attached to arms and create a swinging motion. Unlike the practical counterbalancing effect in humans, this feature of Walking Robot is purely cosmetic. 
+
+It is exactly these cosmetics which you may find in myself. When human features are mimicked in robots, they appear more empathetic and social, making them more ideal for social interactions. An example of which one of these social interactions would be me taking you on a tour right now, haha.
+
+You can read a little more about my retail utility on page three of the "Tinker Zeen" in front of you.

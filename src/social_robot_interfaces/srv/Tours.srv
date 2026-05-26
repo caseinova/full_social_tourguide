@@ -1,0 +1,3 @@
+int64 idx
+---
+geometry_msgs/PoseStamped[] tour

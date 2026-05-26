@@ -1,0 +1,14 @@
+replace 192.168.1.50 with pepper IP
+
+
+    Direct the Audio Output Stream over the Network:
+pactl load-module module-tunnel-sink server=192.168.1.50
+
+    Launch the ROS 2 Audio Capture Node:
+ros2 run audio_capture audio_capture_node --ros-args -p dst:=192.168.1.50
+
+    Open PulseAudio Network Ports:
+pactl load-module module-native-protocol-tcp auth-anonymous=1
+
+    Verify the Topic Connection:
+ros2 topic hz /audio/audio

@@ -1,0 +1,7 @@
+What you see before you is a combination vault, particularly it is called a cryptex. This device was popularised in the fiction movie; The Da Vinci Code.
+
+In the context of this exhibit, the cryptex is a represents the universality of the "password". A password is a string of characters which is is kept secret only to those who have permission to bypass security measure and gain access particular objects, files, controls  E T C.
+
+I am no exception to the possessing security measures, where to control me requires a password to the local network, and then accessing my command line through the Secure Shell requires another password.
+
+Passwords and thus combination security is essential to safety in our modern day electronic world. 
