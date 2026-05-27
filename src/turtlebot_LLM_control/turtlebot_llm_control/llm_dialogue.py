@@ -160,6 +160,7 @@ class LLMDialogueEngine:
             "explain",
             "tsp",
             "dock",
+            "follow_me",
         ]
         messages = [
             {
@@ -200,6 +201,9 @@ class LLMDialogueEngine:
                     "- explain: describe a location or area. "
                     "Examples: 'what is this room', 'tell me about the lab', "
                     "'describe this area', 'what can I see here', 'what is in the gallery'.\n"
+                    "- follow_me: user wants the robot to follow or accompany them. "
+                    "Examples: 'follow me', 'come with me', 'let's go', 'walk with me', "
+                    "'come along', 'tag along', 'follow along'.\n"
                     "- no_action: chatting, greetings, or questions not requiring robot motion.\n"
                     "Return strict JSON with keys: intent, label, location, response, metadata. "
                     f"Allowed intents: {', '.join(allowed_intents)}."
