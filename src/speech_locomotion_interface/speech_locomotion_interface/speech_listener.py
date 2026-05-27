@@ -17,6 +17,7 @@ class NavigationSpeech(Node):
         self.start_tour_ = self.create_publisher(String, '/tour_command',10)
         self.tsp_command_ = self.create_publisher(TspCommand, '/tsp_command', 10)
         self.dock_command_ = self.create_publisher(String, '/dock_command', 10)
+        self.follow_command_ = self.create_publisher(String, '/follow_command', 10)
         self.nav = BasicNavigator()
         self.subscriber_
         self.current_goal = PoseStamped()
@@ -64,6 +65,9 @@ class NavigationSpeech(Node):
         elif (data['intent']=='stop_navigation'):
             self.get_logger().info('Stopping navigation')
             self.nav.cancelTask()
+        elif (data['intent']=='follow_me'):
+            self.get_logger().info('Start following behavior')
+            self.follow_command_.publish(String(data="start"))
 
         
     
