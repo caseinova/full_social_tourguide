@@ -53,6 +53,7 @@ class QrFollower(Node):
         self.declare_parameter('direct_max_angular_speed', 0.7)
         self.declare_parameter('direct_fallback_horizontal_fov_deg', 62.0)
         self.declare_parameter('direct_stop_confirm_frames', 3)
+        self.declare_parameter('direct_command_timeout_sec', 0.5)
         self.declare_parameter('send_min_poses', 2)
         self.declare_parameter('action_name', 'navigate_through_poses')
         self.declare_parameter('no_target_log_period', 10.0)
@@ -81,6 +82,8 @@ class QrFollower(Node):
         self.last_no_target_log_time = None
         self.last_no_image_log_time = None
         self.last_direct_command_log_time = None
+        self.last_direct_command_time = None
+        self.direct_command_stop_sent = True
         self.direct_stop_counter = 0
         self.goal_handle = None
         self.active = self.enabled
@@ -117,6 +120,8 @@ class QrFollower(Node):
         self.enable_srv = self.create_service(
             SetBool, '/qr_follower/set_enabled', self.set_enabled_callback)
         self.timer = self.create_timer(0.2, self.behavior_timer_callback)
+        self.direct_command_watchdog_timer = self.create_timer(
+            0.05, self.direct_command_watchdog_callback)
 
         self.get_logger().info(
             'QR NavigateThroughPoses follower ready. '
@@ -236,6 +241,10 @@ class QrFollower(Node):
     @property
     def direct_stop_confirm_frames(self):
         return int(self.get_parameter('direct_stop_confirm_frames').value)
+
+    @property
+    def direct_command_timeout_sec(self):
+        return float(self.get_parameter('direct_command_timeout_sec').value)
 
     @property
     def send_min_poses(self):
@@ -445,6 +454,21 @@ class QrFollower(Node):
 
         self.send_navigation_goal(list(self.pose_queue), signature)
 
+    def direct_command_watchdog_callback(self):
+        if self.follow_mode != 'direct':
+            return
+        if self.last_direct_command_time is None or self.direct_command_stop_sent:
+            return
+
+        age = (
+            self.get_clock().now() - self.last_direct_command_time
+        ).nanoseconds / 1e9
+        if age < self.direct_command_timeout_sec:
+            return
+
+        self.publish_stop()
+        self.direct_command_stop_sent = True
+
     def log_if_no_camera_images(self):
         now = self.get_clock().now()
         if self.last_image_time is not None:
@@ -506,6 +530,8 @@ class QrFollower(Node):
                 self.stop_behavior('within_min_follow_distance_by_qr_size')
 
             self.cmd_vel_pub.publish(twist)
+            self.last_direct_command_time = self.get_clock().now()
+            self.direct_command_stop_sent = False
             self.log_direct_command(twist, target, target_width_fraction,
                                     estimated_distance)
         else:
@@ -940,6 +966,8 @@ class QrFollower(Node):
         self.last_saved_time = None
         self.last_sent_signature = None
         self.direct_stop_counter = 0
+        self.last_direct_command_time = None
+        self.direct_command_stop_sent = True
         if self.follow_mode == 'direct' and self.goal_handle is not None:
             self.goal_handle.cancel_goal_async()
             self.goal_handle = None
@@ -962,6 +990,8 @@ class QrFollower(Node):
         self.last_saved_time = None
         self.last_sent_signature = None
         self.direct_stop_counter = 0
+        self.last_direct_command_time = None
+        self.direct_command_stop_sent = True
         if self.goal_handle is not None:
             self.goal_handle.cancel_goal_async()
             self.goal_handle = None
@@ -1028,6 +1058,8 @@ class QrFollower(Node):
 
     def publish_stop(self):
         self.cmd_vel_pub.publish(Twist())
+        if self.follow_mode == 'direct':
+            self.direct_command_stop_sent = True
 
     def draw_debug(self, frame, target):
         points = target['points'].astype('int32')

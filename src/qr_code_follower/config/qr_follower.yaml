@@ -35,6 +35,7 @@ qr_follower:
     direct_max_angular_speed: 0.7
     direct_fallback_horizontal_fov_deg: 62.0
     direct_stop_confirm_frames: 3
+    direct_command_timeout_sec: 0.5
     send_min_poses: 2
     action_name: navigate_through_poses
     no_target_log_period: 1.0
