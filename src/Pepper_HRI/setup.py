@@ -25,6 +25,7 @@ data_files = [
         'move_pepper.launch.py',
         'gesture_manager.launch.py',
         'pepper_real.launch.py',
+        'pepper_sim.launch.py',
     ]),
 ]
 data_files.extend(package_files('tablet_assets'))
@@ -50,6 +51,7 @@ setup(
             'tablet_builder = tablet_assets.builder:main',
             'gesture_manager = gestures.gesture_manager:main',
             'audio_processor = audio.audio_processor_node:main',
+            'gesture_manager_sim = gestures.gesture_manager_sim:main',
         ],
     },
 )
