@@ -4,6 +4,7 @@ from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from launch_ros.substitutions import FindPackageShare
 
 
@@ -12,6 +13,7 @@ def generate_launch_description():
     start_tablet = LaunchConfiguration('start_tablet')
     start_hri = LaunchConfiguration('start_hri')
     start_gestures = LaunchConfiguration('start_gestures')
+    show_local_browser = LaunchConfiguration('show_local_browser')
 
     pepper_hri_share = FindPackageShare('pepper_hri')
     move_pepper_launch = PathJoinSubstitution([
@@ -21,6 +23,15 @@ def generate_launch_description():
     ])
 
     sim_parameters = [{'use_sim_time': True}]
+    tablet_sim_parameters = [{
+        'use_sim_time': True,
+        'use_tablet_service': False,
+        'show_local_browser': ParameterValue(show_local_browser, value_type=bool),
+    }]
+    gesture_sim_parameters = [{
+        'use_sim_time': True,
+        'simulate_speech_done': True,
+    }]
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -39,6 +50,10 @@ def generate_launch_description():
             'start_gestures',
             default_value='true',
             description='Start the simulated Pepper trajectory gesture manager.'),
+        DeclareLaunchArgument(
+            'show_local_browser',
+            default_value='true',
+            description='Open the simulated tablet page in a local browser.'),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(move_pepper_launch),
@@ -49,7 +64,7 @@ def generate_launch_description():
             executable='tablet_builder',
             name='tablet_builder_node',
             output='screen',
-            parameters=sim_parameters,
+            parameters=tablet_sim_parameters,
             condition=IfCondition(start_tablet)),
 
         Node(
@@ -65,6 +80,6 @@ def generate_launch_description():
             executable='gesture_manager_sim',
             name='pepper_gesture_node',
             output='screen',
-            parameters=sim_parameters,
+            parameters=gesture_sim_parameters,
             condition=IfCondition(start_gestures)),
     ])
