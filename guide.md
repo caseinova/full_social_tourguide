@@ -43,6 +43,7 @@ Important packages in this workspace:
 | `robot_tour` | Sends full tours and optimized subtours to Nav2; provides `TalkAtWaypoint` Nav2 plugin. |
 | `social_robot_interfaces` | Custom ROS interfaces: `TspCommand`, `Tours`, `Description`. |
 | `docking` | Listens on `/dock_command` and sends OpenNav docking action goals. |
+| `qr_code_follower` | Optional QR-code direct follower; publishes short-lived `/cmd_vel` commands from fresh camera detections. |
 | `speech_locomotion_interface` | Converts `/speech/intent` JSON into tour, subtour, docking, or navigation commands. |
 | `pepper_hri` | Pepper coordinator, tablet UI server/assets, audio processor, gesture manager. |
 | `turtlebot_llm_control` | Speech-to-text, LLM command parsing, speech responses, waypoint speaker, GUI helpers. |
@@ -60,9 +61,13 @@ src/robot_tour/src/subtour.cpp
 src/robot_tour/src/tour_guide.cpp
 src/robot_tour/plugins/talk_at_waypoint.cpp
 src/docking/docking/dock_listener.py
+src/qr_code_follower/qr_code_follower/qr_follower_node.py
+src/qr_code_follower/config/qr_follower.yaml
 src/turtlebot3/turtlebot3_navigation2/param/humble/waffle_pi.yaml
 src/Pepper_HRI/pepper_real.launch.py
 src/turtlebot_LLM_control/launch/intent_only.launch.py
+waypoint_info_loader_helper.py
+waypoint_info.txt
 ```
 
 ## 3. Dependencies
@@ -118,7 +123,7 @@ If you only changed Python config/launch files and want to rebuild quickly:
 ```bash
 cd /home/tom/big_ws
 source /opt/ros/humble/setup.bash
-colcon build --packages-select tour_manager pepper_hri turtlebot_llm_control docking speech_locomotion_interface
+colcon build --packages-select tour_manager pepper_hri turtlebot_llm_control docking speech_locomotion_interface qr_code_follower
 source install/setup.bash
 ```
 
@@ -385,6 +390,14 @@ Inspect saved tour rows:
 sqlite3 tours.db 'SELECT rowid, px, py, pz, qx, qy, qz, qw, description FROM tours;'
 ```
 
+Load waypoint descriptions from `waypoint_info.txt`:
+
+```bash
+python3 waypoint_info_loader_helper.py
+```
+
+Each nonblank line maps sequentially to a `tours` row: line `0` updates the first row by `rowid`, line `1` updates the second row, and so on. If the text file has more lines than the database has rows, the helper inserts new rows with `0.0` for `px, py, pz, qx, qy, qz, qw`.
+
 Known assumption: `tour_manager_service.py` currently stores all saved points in a single `tours` table and retrieves all rows. `request.idx` is accepted but not used to select different tours.
 
 ## 11. Subsystem: `robot_tour`
@@ -508,7 +521,7 @@ ros2 topic echo /talk_command
 Manually release the waypoint wait:
 
 ```bash
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
 ## 12. Subsystem: Nav2 And TurtleBot3 Navigation
@@ -709,6 +722,13 @@ Important launch arguments:
 | `require_wake_word` | `true` | Ignore speech until wake phrase. |
 | `wake_command_window_seconds` | `45.0` | Command window after wake phrase. |
 
+Waypoint speaker behavior:
+
+- subscribes to `/talk_command`;
+- retrieves text from `/retrieve_description`;
+- publishes `explain` to `/pepper/gesture_command` when it starts speaking;
+- publishes `done_speaking` to `/done_talking` and `/done_speaking` when speech finishes.
+
 Useful debug commands:
 
 ```bash
@@ -717,6 +737,8 @@ ros2 topic echo /speech/text
 ros2 topic echo /speech/intent
 ros2 topic echo /speech/response
 ros2 topic echo /speech/debug
+ros2 topic echo /pepper/gesture_command
+ros2 topic echo /done_talking
 ```
 
 If logs show:
@@ -758,7 +780,8 @@ Important topics:
 | --- | --- | --- |
 | `/talk_command` | `std_msgs/String` | Waypoint/exhibit to speak about. |
 | `/done_talking` | `std_msgs/String` | Tells Nav2 waypoint plugin it can continue. |
-| `/pepper/gesture_command` | `std_msgs/String` | Gesture command. |
+| `/done_speaking` | `std_msgs/String` | Duplicate speech-finished signal from `waypoint_speaker`. |
+| `/pepper/gesture_command` | `std_msgs/String` | Gesture command, including `explain` from `waypoint_speaker`. |
 | `/pepper/spoken_words` | `std_msgs/String` | Text Pepper should speak or has spoken. |
 | `/pepper/explain_exhibit` | `std_msgs/String` | Tablet exhibit display command. |
 | `/current_tour` | `std_msgs/String` | Current tour state/command. |
@@ -768,11 +791,50 @@ Manual tests:
 
 ```bash
 ros2 topic pub --once /talk_command std_msgs/msg/String "{data: '0'}"
-ros2 topic pub --once /pepper/gesture_command std_msgs/msg/String "{data: wave}"
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /pepper/gesture_command std_msgs/msg/String "{data: explain}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
-## 17. Common Operator Workflows
+## 17. Subsystem: `qr_code_follower`
+
+Purpose: optionally follow a QR code with camera feedback. In `direct` mode, the node publishes `/cmd_vel` from each freshly processed QR image.
+
+Important files:
+
+```text
+src/qr_code_follower/qr_code_follower/qr_follower_node.py
+src/qr_code_follower/config/qr_follower.yaml
+src/qr_code_follower/launch/qr_follower.launch.py
+```
+
+Run:
+
+```bash
+ros2 launch qr_code_follower qr_follower.launch.py follow_mode:=direct
+```
+
+Start and stop following:
+
+```bash
+ros2 topic pub --once /follow_command std_msgs/msg/String "{data: start}"
+ros2 topic pub --once /follow_command std_msgs/msg/String "{data: stop}"
+```
+
+Safety behavior in direct mode:
+
+- a nonzero `/cmd_vel` is published only from a processed QR image;
+- that command is valid for `direct_command_timeout_sec`, default `0.5`;
+- if no newer QR image is processed before the timeout, the node publishes a zero `Twist` and waits for the next QR update.
+
+Useful checks:
+
+```bash
+ros2 topic echo /qr_follower/status
+ros2 topic echo /cmd_vel
+ros2 param get /qr_follower direct_command_timeout_sec
+```
+
+## 18. Common Operator Workflows
 
 ### Start A Full Tour
 
@@ -856,7 +918,7 @@ ros2 topic pub --once /save_dock_command std_msgs/msg/String "{data: save}"
 sqlite3 docks.db 'SELECT rowid, px, py FROM docks;'
 ```
 
-## 18. Debugging Flags And Commands
+## 19. Debugging Flags And Commands
 
 ### ROS Logging Flags
 
@@ -940,6 +1002,7 @@ Check publisher/subscriber counts:
 ros2 topic info /talk_command
 ros2 topic info /tour_waypoint_order
 ros2 topic info /dock_command
+ros2 topic info /qr_follower/status
 ```
 
 Echo important topics:
@@ -951,6 +1014,8 @@ ros2 topic echo /talk_command
 ros2 topic echo /done_talking
 ros2 topic echo /dock_command
 ros2 topic echo /amcl_pose
+ros2 topic echo /qr_follower/status
+ros2 topic echo /cmd_vel
 ```
 
 Check topic rate:
@@ -1016,6 +1081,7 @@ Tour database:
 ```bash
 sqlite3 tours.db '.tables'
 sqlite3 tours.db 'SELECT rowid, px, py, description FROM tours;'
+python3 waypoint_info_loader_helper.py
 ```
 
 Dock database:
@@ -1053,7 +1119,7 @@ colcon build --packages-select robot_tour
 source install/setup.bash
 ```
 
-## 19. Troubleshooting And FAQs
+## 20. Troubleshooting And FAQs
 
 ### `dock_after_tour` is true in source YAML, but runtime says false
 
@@ -1116,7 +1182,7 @@ ros2 topic echo /done_talking
 Manually unblock:
 
 ```bash
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
 Also check `waypoint_pause_duration` and `max_wait_duration`.
@@ -1181,12 +1247,13 @@ Check:
 
 ```bash
 ros2 topic echo /talk_command
+ros2 topic echo /pepper/gesture_command
 ros2 topic echo /done_talking
 ros2 node list | grep waypoint
 ros2 node list | grep hri
 ```
 
-If `/talk_command` appears but Pepper does not respond, debug Pepper HRI or `waypoint_speaker`.
+If `/talk_command` appears but Pepper does not respond, confirm `waypoint_speaker` publishes `explain` on `/pepper/gesture_command`, then debug Pepper HRI or `waypoint_speaker`.
 
 ### The robot does not move in simulation
 
@@ -1200,7 +1267,7 @@ ros2 lifecycle get /controller_server
 
 If `/cmd_vel` is empty, Nav2 is probably not planning or waypoint action was not accepted. If `/cmd_vel` is active but the robot does not move, Gazebo/plugin control may be the issue.
 
-## 20. Known Limitations And Assumptions
+## 21. Known Limitations And Assumptions
 
 - `tour_manager` currently stores and retrieves one flat list of waypoints from `tours.db`.
 - `subtour` optimizes based on straight-line distance between poses, not actual Nav2 path cost.
@@ -1210,7 +1277,7 @@ If `/cmd_vel` is empty, Nav2 is probably not planning or waypoint action was not
 - Config changes under `src/.../config` usually require rebuilding the package that installs that config.
 - Real robot runs depend on correct TF, localization, serial port, network, and battery state.
 
-## 21. Quick Command Reference
+## 22. Quick Command Reference
 
 Source workspace:
 
@@ -1258,7 +1325,7 @@ ros2 topic pub --once /dock_command std_msgs/msg/String "{data: dock}"
 Unblock waypoint speaking:
 
 ```bash
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
 Check subtour docking:
@@ -1275,7 +1342,7 @@ ros2 topic echo /tour_waypoint_order
 ros2 topic echo /talk_command
 ```
 
-## 22. What A Healthy Run Looks Like
+## 23. What A Healthy Run Looks Like
 
 During startup:
 

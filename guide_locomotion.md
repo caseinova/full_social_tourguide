@@ -37,6 +37,7 @@ ros2 launch tour_manager pepper_locomotion_llm.launch.py enable_pepper:=false en
 | `robot_tour` | Sends full tours/subtours to Nav2 and provides the waypoint task plugin. |
 | `social_robot_interfaces` | Defines custom `TspCommand`, `Tours`, and `Description` interfaces. |
 | `docking` | Converts `/dock_command` into an OpenNav docking action. |
+| `qr_code_follower` | Optional QR-code direct follower; publishes short-lived `/cmd_vel` commands from fresh camera detections. |
 | `speech_locomotion_interface` | Optional command bridge from `/speech/intent` JSON to locomotion topics. |
 | `turtlebot3_navigation2` | Nav2 params, maps, waypoint follower config. |
 | `turtlebot3_bringup` | Real TurtleBot3 hardware bringup. |
@@ -60,7 +61,11 @@ src/robot_tour/src/tour_guide.cpp
 src/robot_tour/src/subtour.cpp
 src/robot_tour/plugins/talk_at_waypoint.cpp
 src/docking/docking/dock_listener.py
+src/qr_code_follower/qr_code_follower/qr_follower_node.py
+src/qr_code_follower/config/qr_follower.yaml
 src/turtlebot3/turtlebot3_navigation2/param/humble/waffle_pi.yaml
+waypoint_info_loader_helper.py
+waypoint_info.txt
 ```
 
 ## 4. Dependencies
@@ -120,7 +125,7 @@ Build only the locomotion packages after edits:
 ```bash
 cd /home/tom/big_ws
 source /opt/ros/humble/setup.bash
-colcon build --packages-select robot_tour tour_manager docking speech_locomotion_interface turtlebot3_navigation2
+colcon build --packages-select robot_tour tour_manager docking speech_locomotion_interface turtlebot3_navigation2 qr_code_follower
 source install/setup.bash
 ```
 
@@ -298,6 +303,14 @@ Inspect saved waypoints:
 sqlite3 tours.db 'SELECT rowid, px, py, pz, qx, qy, qz, qw, description FROM tours;'
 ```
 
+Load waypoint descriptions from `waypoint_info.txt`:
+
+```bash
+python3 waypoint_info_loader_helper.py
+```
+
+Each nonblank line maps sequentially to a `tours` row: line `0` updates the first row by `rowid`, line `1` updates the second row, and so on. If the text file has more lines than the database has rows, the helper inserts new rows with `0.0` for `px, py, pz, qx, qy, qz, qw`.
+
 Retrieve waypoints through ROS:
 
 ```bash
@@ -450,7 +463,7 @@ Arrived at goal waypoint 0 (tour waypoint 4), published talk command: '4'
 Manually unblock waypoint waiting:
 
 ```bash
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
 ## 13. Subsystem: Docking
@@ -512,7 +525,46 @@ Docking feedback: navigating to staging pose, retries=0
 Docking succeeded after 0 retries
 ```
 
-## 14. Optional Command Bridge: `speech_locomotion_interface`
+## 14. Optional QR Follower: `qr_code_follower`
+
+Purpose: follow a QR code with camera feedback. In `direct` mode, the node publishes `/cmd_vel` from each freshly processed QR image.
+
+Important files:
+
+```text
+src/qr_code_follower/qr_code_follower/qr_follower_node.py
+src/qr_code_follower/config/qr_follower.yaml
+src/qr_code_follower/launch/qr_follower.launch.py
+```
+
+Run:
+
+```bash
+ros2 launch qr_code_follower qr_follower.launch.py follow_mode:=direct
+```
+
+Start and stop following:
+
+```bash
+ros2 topic pub --once /follow_command std_msgs/msg/String "{data: start}"
+ros2 topic pub --once /follow_command std_msgs/msg/String "{data: stop}"
+```
+
+Direct-mode safety behavior:
+
+- a nonzero `/cmd_vel` is published only from a processed QR image;
+- that command is valid for `direct_command_timeout_sec`, default `0.5`;
+- if no newer QR image is processed before the timeout, the node publishes a zero `Twist` and waits for the next QR update.
+
+Useful checks:
+
+```bash
+ros2 topic echo /qr_follower/status
+ros2 topic echo /cmd_vel
+ros2 param get /qr_follower direct_command_timeout_sec
+```
+
+## 15. Optional Command Bridge: `speech_locomotion_interface`
 
 This package is still locomotion-side because it converts already-parsed intent JSON into movement commands. It does not perform LLM reasoning itself.
 
@@ -550,7 +602,7 @@ ros2 topic pub --once /speech/intent std_msgs/msg/String '{data: "{\"intent\":\"
 ros2 topic pub --once /speech/intent std_msgs/msg/String '{data: "{\"intent\":\"dock\"}"}'
 ```
 
-## 15. Debugging Commands
+## 16. Debugging Commands
 
 ### Basic ROS Checks
 
@@ -581,6 +633,7 @@ ros2 topic echo /talk_command
 ros2 topic echo /done_talking
 ros2 topic echo /dock_command
 ros2 topic echo /amcl_pose
+ros2 topic echo /qr_follower/status
 ros2 topic echo /cmd_vel
 ```
 
@@ -647,6 +700,7 @@ ros2 run tf2_ros tf2_echo odom base_link
 ```bash
 sqlite3 tours.db '.tables'
 sqlite3 tours.db 'SELECT rowid, px, py, description FROM tours;'
+python3 waypoint_info_loader_helper.py
 sqlite3 docks.db '.tables'
 sqlite3 docks.db 'SELECT rowid, px, py FROM docks;'
 ```
@@ -678,7 +732,7 @@ Show launch arguments:
 ros2 launch tour_manager locomotion_test.launch.py --show-args
 ```
 
-## 16. Troubleshooting
+## 17. Troubleshooting
 
 ### Config says `dock_after_tour: true`, but runtime says false
 
@@ -736,7 +790,7 @@ The plugin is waiting for `/done_talking`.
 Unblock manually:
 
 ```bash
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
 ### `/follow_waypoints` is not available
@@ -780,7 +834,7 @@ ros2 topic pub --once /save_dock_command std_msgs/msg/String "{data: save}"
 sqlite3 docks.db 'SELECT rowid, px, py FROM docks;'
 ```
 
-## 17. Known Limitations
+## 18. Known Limitations
 
 - The tour database is a flat list of waypoints, not multiple named tours.
 - `subtour` uses straight-line pose distance, not full Nav2 path cost.
@@ -789,7 +843,7 @@ sqlite3 docks.db 'SELECT rowid, px, py FROM docks;'
 - Docking requires either saved dock poses in `docks.db` or a valid OpenNav dock ID setup.
 - Changes to installed config files require rebuilding the package that installs them.
 
-## 18. Quick Reference
+## 19. Quick Reference
 
 Source:
 
@@ -831,7 +885,7 @@ ros2 topic pub --once /tsp_command social_robot_interfaces/msg/TspCommand "{wayp
 Release waypoint wait:
 
 ```bash
-ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done}"
+ros2 topic pub --once /done_talking std_msgs/msg/String "{data: done_speaking}"
 ```
 
 Dock:
