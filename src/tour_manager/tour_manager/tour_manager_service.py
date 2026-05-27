@@ -6,6 +6,7 @@ import rclpy
 from rclpy.node import Node
 import sqlite3
 from json import dumps, loads
+import re
 
 class TourManager(Node):
 
@@ -17,6 +18,8 @@ class TourManager(Node):
         self.srv = self.create_service(Tours, 'tour_retrieve', self.tour_retrieve_callback)
         self.get_description_ = self.create_service(Description, 'retrieve_description', self.retrieve_description_callback)
         self.subscription_ = self.create_subscription(PoseStamped,'save_tour',self.save_tour_callback,10)
+        self.current_dest_name_publisher_ = self.create_publisher(String, 'current_tour', 10)
+        self.current_dest_sub_ = self.create_subscription(String, 'talk_command', self.current_dest_callback, 10)
         self.con = sqlite3.connect("tours.db")
         cur = self.con.cursor()
         cur.execute("CREATE TABLE IF NOT EXISTS tours (px,py,pz,qx,qy,qz,qw,description)")
@@ -90,6 +93,11 @@ class TourManager(Node):
         #     json_obj = loads(res.fetchone())
         # print(res.fetchall())
         return res.fetchall()
+    def current_dest_callback(self, msg):
+        # self.get_logger().info(f"Received talk command: {msg.data}")
+        idx = int(re.findall(r"\d+", msg.data)[-1])
+        tours = self.retrieve_tour(0)
+        self.current_dest_name_publisher_.publish(String(data=tours[idx][7].split('|')[0].strip()))
         
 
 
