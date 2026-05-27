@@ -33,6 +33,7 @@ class WaypointSpeakerNode(Node):
         self._done_talking_pub = self.create_publisher(String, "/done_talking", 10)
         self._done_speaking_pub = self.create_publisher(String, "/done_speaking", 10)
         self._emotion_pub = self.create_publisher(String, "/robot/emotion", 10)
+        self._gesture_pub = self.create_publisher(String, "/pepper/gesture_command", 10)
 
         self.get_logger().info(
             "Waypoint speaker ready. Waiting for retrieve_description service."
@@ -110,6 +111,7 @@ class WaypointSpeakerNode(Node):
         )
 
         def _speak_then_signal():
+            self._gesture_pub.publish(String(data="explain"))
             with self._speaking_lock:
                 _run_tts(text)
             self._publish_emotion("satisfied", "finished explanation", 0.55)

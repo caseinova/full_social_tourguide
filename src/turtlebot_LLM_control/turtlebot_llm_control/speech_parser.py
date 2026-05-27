@@ -225,6 +225,16 @@ def parse_utterance(text: str) -> IntentToken:
             response="Preparing an explanation for {}.".format(location),
         )
 
+    if any(phrase in cleaned for phrase in (
+        "follow me", "come with me", "let's go", "lets go",
+        "walk with me", "come along", "follow along", "tag along",
+    )):
+        return IntentToken(
+            intent="follow_me",
+            utterance=raw,
+            response="Sure, I'll follow you.",
+        )
+
     return IntentToken(
         intent="unknown",
         utterance=raw,
