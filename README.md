@@ -1,117 +1,125 @@
-# Big Workspace
+# Social Tour Guide Robot Workspace
 
-ROS 2 workspace for the TurtleBot tour stack, Pepper HRI integration, and
-speech/LLM intent control.
+This workspace contains the full Social Tour Guide Robot stack for ROS 2 Humble.
+It integrates a TurtleBot3 Waffle Pi base, optional SoftBank Pepper HRI, QR code
+following, speech/LLM intent parsing, waypoint tour planning, docking, and
+Nav2-based locomotion.
+
+## What this project does
+
+- Accepts spoken commands and LLM-guided intent input.
+- Navigates TurtleBot3 to saved waypoint tours using Nav2.
+- Supports full tours and optimized subtours via a TSP planner.
+- Speaks waypoint descriptions through local TTS and Pepper audio.
+- Executes Pepper gestures, tablet UI updates, and socially-aware interaction.
+- Saves waypoint and dock poses in SQLite databases.
+- Follows QR codes in direct or pose-following mode.
+- Runs in Gazebo simulation or on real TurtleBot3 hardware.
+
+## Prerequisites
+
+- Ubuntu 22.04 LTS
+- ROS 2 Humble Hawksbill
+- TurtleBot3 packages: `turtlebot3`, `turtlebot3_simulations`, `turtlebot3_navigation2`
+- `opennav_docking` plugin (OpenNav docking support)
+- `python3-opencv`, `ros-humble-cv-bridge`
+- Optional Pepper robot with NAOqi / `qi` SDK for full Pepper HRI support
 
 ## Build
 
 From the workspace root:
 
 ```bash
-colcon build
+source /opt/ros/humble/setup.bash
+rosdep update
+rosdep install --from-paths src --ignore-src -r -y
+colcon build --symlink-install
 source install/setup.bash
 ```
 
-For only the integrated launch package:
+To rebuild only the integrated packages:
 
 ```bash
-colcon build --packages-select tour_manager
+colcon build --packages-select tour_manager pepper_hri turtlebot_llm_control docking speech_locomotion_interface qr_code_follower
 source install/setup.bash
 ```
 
-## Integrated Pepper, TurtleBot, and LLM Launch
+If you change `src/tour_manager/config/tour_manager_params.yaml`, rebuild
+`tour_manager` so the installed launch files use the updated parameters.
 
-The workspace-level integrated launch is:
+## Quick start
+
+Launch the integrated system:
 
 ```bash
 ros2 launch tour_manager pepper_locomotion_llm.launch.py
 ```
 
-This starts the current locomotion test stack and can optionally include:
-
-- real Pepper support from `pepper_hri/pepper_real.launch.py`
-- intent-only speech and LLM control from
-  `turtlebot_llm_control/intent_only.launch.py`
-- either Gazebo TurtleBot simulation or real TurtleBot bringup
-
-The LLM intent launch is wired with:
+### Simulation mode (default)
 
 ```bash
-enable_microphone:=true
-llm_provider:=groq
-llm_model:=llama-3.1-8b-instant
+ros2 launch tour_manager pepper_locomotion_llm.launch.py turtlebot_mode:=sim use_sim_time:=true
 ```
 
-## Common Commands
-
-Default: Gazebo TurtleBot, Pepper enabled, intent control enabled.
+### Real TurtleBot3 mode
 
 ```bash
-ros2 launch tour_manager pepper_locomotion_llm.launch.py
+ros2 launch tour_manager pepper_locomotion_llm.launch.py turtlebot_mode:=real use_sim_time:=false usb_port:=/dev/ttyACM0
 ```
 
-Use the real TurtleBot instead of Gazebo:
-
-```bash
-ros2 launch tour_manager pepper_locomotion_llm.launch.py turtlebot_mode:=real
-```
-
-Disable real Pepper HRI:
+### Disable Pepper HRI
 
 ```bash
 ros2 launch tour_manager pepper_locomotion_llm.launch.py enable_pepper:=false
 ```
 
-Disable the LLM intent layer:
+### Disable LLM / intent layer
 
 ```bash
 ros2 launch tour_manager pepper_locomotion_llm.launch.py enable_intent:=false
 ```
 
-Run real TurtleBot with Pepper and intent disabled:
+### Real robot without Pepper and intent
 
 ```bash
-ros2 launch tour_manager pepper_locomotion_llm.launch.py \
-  turtlebot_mode:=real \
-  enable_pepper:=false \
-  enable_intent:=false
+ros2 launch tour_manager pepper_locomotion_llm.launch.py turtlebot_mode:=real enable_pepper:=false enable_intent:=false
 ```
 
-## Launch Arguments
+## Core packages
+
+| Package | Role |
+| --- | --- |
+| `tour_manager` | Main launch files, waypoint database, tour management, shared ROS params. |
+| `robot_tour` | Tour and subtour execution, Nav2 waypoint plugins. |
+| `speech_locomotion_interface` | Converts `/speech/intent` JSON into tour, docking, and navigation commands. |
+| `pepper_hri` | Pepper gesture manager, tablet UI assets, audio and HRI coordination. |
+| `turtlebot_llm_control` | Speech-to-text, intent classification, LLM fallback, waypoint speaker. |
+| `docking` | OpenNav docking listener and dock pose manager. |
+| `qr_code_follower` | QR-code-based follower with direct-velocity and pose-follow modes. |
+
+## Main launch arguments
 
 | Argument | Default | Description |
 | --- | --- | --- |
-| `turtlebot_mode` | `sim` | `sim` launches Gazebo, `real` launches physical TurtleBot bringup. |
-| `use_sim_time` | `true` in sim, `false` in real | Clock mode passed through to Nav2 and intent nodes. |
-| `enable_pepper` | `true` | Starts real Pepper HRI nodes. |
-| `enable_intent` | `true` | Starts the intent-only speech and LLM nodes. |
-| `model` | `waffle_pi` | TurtleBot3 model. |
-| `lds_model` | `LDS-01` | Lidar model for real TurtleBot bringup. Use `LDS-02` only if `ld08_driver` is installed. |
-| `usb_port` | `/dev/ttyACM0` | OpenCR USB port for real TurtleBot mode. |
-| `namespace` | empty | Namespace forwarded to real TurtleBot bringup. |
-| `nav2_params_file` | TurtleBot3 `waffle_pi.yaml` | Nav2 parameters file. |
+| `turtlebot_mode` | `sim` | `sim` launches Gazebo; `real` launches physical TurtleBot3 hardware. |
+| `use_sim_time` | auto (`true` in sim, `false` in real) | Uses the simulated clock when running Gazebo. |
+| `enable_pepper` | `true` | Launch Pepper HRI support. |
+| `enable_intent` | `true` | Launch the speech/LLM intent stack. |
+| `model` | `waffle_pi` | TurtleBot3 model name. |
+| `lds_model` | `LDS-01` | Lidar sensor model for real TurtleBot bringup. |
+| `usb_port` | `/dev/ttyACM0` | OpenCR serial port for real TurtleBot mode. |
+| `namespace` | empty | Optional ROS namespace for real TurtleBot bringup. |
+| `nav2_params_file` | `waffle_pi.yaml` | Nav2 parameter file used for TurtleBot3. |
 
-## Notes
+## QR code follower
 
-- `turtlebot_mode:=sim` launches `turtlebot3_gazebo/turtlebot3_world.launch.py`.
-- `turtlebot_mode:=real` launches `turtlebot3_bringup/robot.launch.py`.
-- Nav2 and the tour manager launch in both modes.
-- The workspace must be sourced after building before `ros2 launch` can find
-  `tour_manager`.
-
-## QR Code Follower
-
-The `qr_code_follower` package can approach a QR code in two modes:
-
-- `follow_mode:=pose` tracks QR-code poses and uses Nav2 `NavigateThroughPoses`.
-- `follow_mode:=direct` publishes `/cmd_vel` using QR image centering and the
-  apparent QR size.
+Launch the optional QR code follower:
 
 ```bash
 ros2 launch qr_code_follower qr_follower.launch.py
 ```
 
-Useful launch options:
+Common options:
 
 ```bash
 ros2 launch qr_code_follower qr_follower.launch.py \
@@ -122,34 +130,28 @@ ros2 launch qr_code_follower qr_follower.launch.py \
   enabled:=false
 ```
 
-Direct image-centering mode:
+Direct-follow mode:
 
 ```bash
 ros2 launch qr_code_follower qr_follower.launch.py follow_mode:=direct
 ```
 
-Start or stop it at runtime with `follow_command`:
-
-```bash
-ros2 topic pub --once follow_command std_msgs/msg/String "{data: 'start'}"
-ros2 topic pub --once follow_command std_msgs/msg/String "{data: 'stop'}"
-```
-
-You can also enable or disable it with the service:
+Enable / disable at runtime:
 
 ```bash
 ros2 service call /qr_follower/set_enabled std_srvs/srv/SetBool "{data: true}"
 ros2 service call /qr_follower/set_enabled std_srvs/srv/SetBool "{data: false}"
 ```
 
-Watch detection and control status:
+Watch status:
 
 ```bash
 ros2 topic echo /qr_follower/status
 ```
 
-Tune behavior in `src/qr_code_follower/config/qr_follower.yaml`. The most useful
-parameters are `follow_mode`, `qr_size_m`, `min_follow_distance_m`,
-`pose_queue_size`, `pose_save_period`, `goal_offset_m`, and `stop_range_m`.
-`qr_size_m` must match the printed QR code's physical side length. In direct
-mode, `min_follow_distance_m` is enforced from the apparent QR size in the image.
+## Notes
+
+- The integrated launch file is `src/tour_manager/launch/pepper_locomotion_llm.launch.py`.
+- Simulation uses `turtlebot3_gazebo`; hardware mode uses `turtlebot3_bringup`.
+- The workspace must be sourced after building before `ros2 launch` can find `tour_manager`.
+- This system assumes a pre-built map for Nav2 localisation and does not perform live SLAM during tours.
